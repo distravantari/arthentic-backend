@@ -848,6 +848,16 @@ router.post("/updateStock",function(req,res)
                 });
             });
 
+            router.post("/getIdOrder",function(req,res){
+              connection.query("SELECT * FROM `order` ORDER BY nomerOrder DESC LIMIT 1",function(err,rows){
+                if (err) {
+                  res.json({"message":"err.."+err});
+                }else{
+                  res.json({"message":rows});
+                }
+              })
+            })
+
             router.post("/showOrder",function(req,res){
 
                 var query = "select * from `order`";
@@ -1348,17 +1358,6 @@ router.post("/hitungHarian",function(req,res){
         if(err){
             res.json({"message":"err.."+query});
         }else{
-            var pesanan = "";
-            var quantity = "";
-            var diskon= "";
-            var hargaAkhir = "";
-            for(i=0;i<success.length;i++){
-                pesanan+= success[i].pesanan+",";
-                quantity+= success[i].quantity+",";
-                diskon+= success[i].diskon+",";
-                hargaAkhir+= success[i].hargaAkhir+",";
-                totalHarga = Number(totalHarga)+Number(success[i].hargaAkhir);
-           }
             res.json({"message":success});
 
         }
