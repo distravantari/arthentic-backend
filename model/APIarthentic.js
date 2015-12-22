@@ -656,6 +656,17 @@ router.post("/updateStock",function(req,res)
      });
       //--insert menu end..
 
+      router.post("/deleteMenu",function(req,res){
+        var id = req.body.id;
+        connection.query("DELETE FROM `menu` WHERE id ='"+id+"'",function(err,rows){
+          if (err) {
+            res.json({"message":"err.. "+err});
+          }else{
+            res.json({"message":"success"});
+          }
+        })
+      });
+
       //tambah/kurang kuantitas param(id,jumTambah) ex : tambah 100 (jumTambah = 100), kurang 100 (jumTambah = -100)
       router.post("/tambahKuantitas",function(req,res){
          //request nama
