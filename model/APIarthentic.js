@@ -72,14 +72,24 @@ APIarthentic.prototype.handleRoutes = function(router,connection,md5)
           var hargasatuan = req.body.hargaSatuan;
           var hargaakhir = req.body.hargaAkhir;
 
-          var query = "INSERT INTO `order` (nomerorder,id,date,pesanan,quantity,diskon,hargasatuan,hargaAkhir) VALUES (?,?,?,?,?,?,?,?)";
-          var table = [nomororder,id,date,pesanan,quantity,diskon,hargasatuan,hargaakhir];
-          query = mysql.format(query,table);
-          connection.query(query,function(err,rows){
+          connection.query("SELECT * FROM `menu` WHERE id = '"+id+"'",function(err,menu){
             if (err) {
-              res.json({"message":"err .."+err});
+              res.json({"message":"err.."+err});
             }else{
-              res.json({"message":"success"});
+              if (menu.length <= 0) {
+                res.json({"message":"id menu tidak terdaftar"});
+              }else{
+                var query = "INSERT INTO `order` (nomerorder,id,date,pesanan,quantity,diskon,hargasatuan,hargaAkhir) VALUES (?,?,?,?,?,?,?,?)";
+                var table = [nomororder,id,date,pesanan,quantity,diskon,hargasatuan,hargaakhir];
+                query = mysql.format(query,table);
+                connection.query(query,function(err,rows){
+                  if (err) {
+                    res.json({"message":"err .."+err});
+                  }else{
+                    res.json({"message":"success"});
+                  }
+                });
+              }
             }
           });
       });
