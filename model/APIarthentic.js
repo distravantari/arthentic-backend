@@ -63,34 +63,24 @@ APIarthentic.prototype.handleRoutes = function(router,connection,md5)
 
     router.post("/insertOrder",function(req,res){
 
+          var nomororder = req.body.nomororder;
           var id = req.body.id;
+          var date = req.body.date;
+          var pesanan = req.body.pesanan;
           var quantity = req.body.quantity;
           var diskon = req.body.diskon;
+          var hargasatuan = req.body.hargaSatuan;
+          var hargaakhir = req.body.hargaAkhir;
 
-          var query = "select * from `menu` where id = '"+id+"'";
-          //sukses, kembalikan total harga
-          connection.query(query,function(err,success){
-              if(err){
-                  res.json({"message":"gagal menampilkan menu"+query})
-              }else{
-                  //masukin ke database order
-                  var nomororder = req.body.nomororder;
-                  // id sama kaya yang diatas
-                  var nama = success[0].nama;
-                  var harga = success[0].harga;
-                  var hargaAkhir = ( (Number(harga) - ( Number(harga)*Number(diskon)/100)) *Number(quantity) );
-
-                  var query2 = "INSERT INTO `order` (nomerorder,id,pesanan,quantity,diskon,hargasatuan,hargaAkhir) VALUES (?,?,?,?,?,?,?)";
-                  var table = [nomororder,id,nama,quantity,diskon,harga,hargaAkhir];
-                  query2 = mysql.format(query2,table);
-                  connection.query(query2,function(err,rows){
-                    if (err) {
-                      res.json({"message":"err .."+err});
-                    }else{
-                      res.json({"message":"berhasil insert order"});
-                    }
-                  })
-              }
+          var query = "INSERT INTO `order` (nomerorder,id,date,pesanan,quantity,diskon,hargasatuan,hargaAkhir) VALUES (?,?,?,?,?,?,?,?)";
+          var table = [nomororder,id,date,pesanan,quantity,diskon,hargasatuan,hargaakhir];
+          query = mysql.format(query,table);
+          connection.query(query,function(err,rows){
+            if (err) {
+              res.json({"message":"err .."+err});
+            }else{
+              res.json({"message":"success"});
+            }
           });
       });
 
@@ -920,60 +910,60 @@ router.post("/updateStock",function(req,res)
            });
             //--show history end.
 
-//insert history (id, namaUser, perubahan, row)
-router.get("/insertPegawai",function(req,res){
-//request nik
-var nik = req.body.nik;
-//request nama
-var nama = req.body.nama;
-//request alamat
-var alamat = req.body.alamat;
-//request
-var jabatan = req.body.jabatan;
-//request date (format yyyy-mm-dd, ex.2015-12-12)
-var tanggallahir = req.body.tanggallahir;
-//request gaji pegawai
-var gaji = req.body.gaji;
+          //insert history (id, namaUser, perubahan, row)
+          router.post("/insertPegawai",function(req,res){
+              //request nik
+              var nik = req.body.nik;
+              //request nama
+              var nama = req.body.nama;
+              //request alamat
+              var alamat = req.body.alamat;
+              //request
+              var jabatan = req.body.jabatan;
+              //request date (format yyyy-mm-dd, ex.2015-12-12)
+              var tanggallahir = req.body.tanggallahir;
+              //request gaji pegawai
+              var gaji = req.body.gaji;
 
-//query checking id jika sudah ada yang sama
-var query1 = "select NIK from pegawai where NIK = ?";
-var table1 = [nik];
-query1 = mysql.format(query1,table1);
+              //query checking id jika sudah ada yang sama
+              var query1 = "select NIK from pegawai where NIK = ?";
+              var table1 = [nik];
+              query1 = mysql.format(query1,table1);
 
-connection.query(query1,function(err,temp)
-{
-  if(err){
-    res.json({"message":err});
-  }
-  else{
-  //Jika id menu belum ada di database
-  if(temp.length == 0 )
-  {
-      //query insert
-      var query = "INSERT INTO `pegawai`(`NIK`, `Nama`, `Alamat`, `Jabatan`, `TanggalLahir`, `Gaji`) VALUES (?,?,?,?,?,?)"
-      var table = [nik,nama,alamat,jabatan,tanggallahir,gaji];
-      query = mysql.format(query, table);
+              connection.query(query1,function(err,temp)
+              {
+                if(err){
+                  res.json({"message":err});
+                }
+                else{
+                //Jika id menu belum ada di database
+                if(temp.length == 0 )
+                {
+                    //query insert
+                    var query = "INSERT INTO `pegawai`(`NIK`, `Nama`, `Alamat`, `Jabatan`, `TanggalLahir`, `Gaji`) VALUES (?,?,?,?,?,?)"
+                    var table = [nik,nama,alamat,jabatan,tanggallahir,gaji];
+                    query = mysql.format(query, table);
 
-      connection.query(query,function(err,temp){
-        if(err)
-        {
-            res.json({"message":"failed"});
-        }
-        else
-        {
+                    connection.query(query,function(err,temp){
+                      if(err)
+                      {
+                          res.json({"message":"failed "+query});
+                      }
+                      else
+                      {
 
-            res.json({"message":"input pegawai berhasil" });
-        }
-      });
-  }
-  //Jika barang sudah ada di database
-  else
-  {
-    res.json({"message":"id  "+nik+ " sudah ada di database!"});
-  }
-}
-});
-});
+                          res.json({"message":"input pegawai berhasil" });
+                      }
+                    });
+                }
+                //Jika barang sudah ada di database
+                else
+                {
+                  res.json({"message":"id  "+nik+ " sudah ada di database!"});
+                }
+              }
+              });
+          });
 //--insert pegawai end..
 
 //update pegawai(id, nama,alamat,jabatan,tanggal_lahir,gaji)
