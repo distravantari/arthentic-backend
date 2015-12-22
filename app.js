@@ -16,6 +16,7 @@ app.use(function(req, res, next) {
   next();
 });
 
+
 function connect(){
 	var self = this;
 	self.connectMysql();
