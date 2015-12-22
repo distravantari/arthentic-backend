@@ -841,9 +841,9 @@ router.post("/updateStock",function(req,res)
                 //sukses, kembalikan total harga
                 connection.query(query,function(err,success){
                     if(err){
-                        res.json({"message":"gagal menghapus"+query+nomerorder+id})
+                        res.json({"message":"gagal menghapus"})
                     }else{
-                       res.json({"message":"berhasil menghapus"+query+nomerorder+id});
+                       res.json({"message":"berhasil menghapus"});
                     }
                 });
             });
