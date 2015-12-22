@@ -1237,7 +1237,7 @@ connection.query(query1,function(err,temp)
   if(temp.length == 0 )
   {
       //query insert
-      var query = "INSERT INTO `customer`(`kodemember`, `nama`, `alamat`, `tanggal lahir`, `startmember`, `endmember`) VALUES (?,?,?,?,?,?)"
+      var query = "INSERT INTO `customer`(`kodemember`, `nama`, `alamat`, `tanggallahir`, `startmember`, `endmember`) VALUES (?,?,?,?,?,?)"
       var table = [kodemember,nama,alamat,tanggallahir,startmember,endmember];
       query = mysql.format(query, table);
 
@@ -1276,7 +1276,7 @@ router.post("/updateCustomer",function(req,res){
   var startmember = req.body.startmember;
   var endmember = req.body.endmember;
 //query checking id jika sudah ada yang sama
-var query = "UPDATE `customer` SET `nama`=?,`alamat`=?,`tanggal lahir`=?, `startmember`=?, `endmember`=? WHERE `kodemember`=?";
+var query = "UPDATE `customer` SET `nama`=?,`alamat`=?,`tanggallahir`=?, `startmember`=?, `endmember`=? WHERE `kodemember`=?";
 var table = [nama,alamat,tanggallahir,startmember,endmember,kodemember];
 query = mysql.format(query, table);
 
