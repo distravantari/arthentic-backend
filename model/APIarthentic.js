@@ -1346,7 +1346,7 @@ router.post("/hitungHarian",function(req,res){
     //sukses, kembalikan total harga
     connection.query(query,function(err,success){
         if(err){
-            res.json({"message":"tidak dapat menghitung total harian"+query})
+            res.json({"message":"err.."+query});
         }else{
             var pesanan = "";
             var quantity = "";
@@ -1359,7 +1359,7 @@ router.post("/hitungHarian",function(req,res){
                 hargaAkhir+= success[i].hargaAkhir+",";
                 totalHarga = Number(totalHarga)+Number(success[i].hargaAkhir);
            }
-            res.json({"pesanan": pesanan,"quantity":quantity,"diskon":diskon,"Harga Akhir":hargaAkhir,"Total Harga":totalHarga});
+            res.json({"message":success});
 
         }
     });
