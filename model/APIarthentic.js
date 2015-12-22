@@ -1419,32 +1419,6 @@ router.post("/insertDBMingguan",function(req,res){
     });
 });
 
-//hitung bulanan
-// router.post("/hitungtotalpendapatanBulanan",function(req,res){
-//    var bulan = req.body.bulan;
-//    var tahun = req.body.tahun;
-//    var queryKode = "select TotalPemasukkan from `laporanharian` where EXTRACT(MONTH from date)=? AND EXTRACT(YEAR from date)=?";
-//    var table = [bulan,tahun];
-//    queryKode = mysql.format(queryKode,table);
-//    connection.query(queryKode,function(err,success)
-//    {
-//        //jika id tidak ada di db
-//        if(err)
-//        {
-//            res.json({"message":"error"+ queryKode});
-//        }
-//        else
-//        {
-//          var totalPendapatanBulanan = 0;
-//          for (var i = 0; i < success.length; i++) {
-//            totalPendapatanBulanan=Number(totalPendapatanBulanan)+success[i].TotalPemasukkan;
-//          }
-//
-//             res.json({"message":totalPendapatanBulanan});
-//        }
-//    });
-// });
-
 router.post("/insertDBBulanan",function(req,res){
 
     var bulan = req.body.bulan;
