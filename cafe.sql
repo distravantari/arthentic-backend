@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.7.1
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 22, 2015 at 06:27 AM
--- Server version: 5.6.20
--- PHP Version: 5.5.15
+-- Generation Time: Dec 22, 2015 at 10:29 AM
+-- Server version: 10.1.9-MariaDB
+-- PHP Version: 5.6.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `cafe`
@@ -26,11 +26,11 @@ SET time_zone = "+00:00";
 -- Table structure for table `customer`
 --
 
-CREATE TABLE IF NOT EXISTS `customer` (
+CREATE TABLE `customer` (
   `kodemember` int(10) NOT NULL,
   `nama` varchar(1000) NOT NULL,
   `alamat` varchar(1000) NOT NULL,
-  `tanggal lahir` date NOT NULL,
+  `tanggallahir` date NOT NULL,
   `startmember` date NOT NULL,
   `endmember` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -39,9 +39,10 @@ CREATE TABLE IF NOT EXISTS `customer` (
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`kodemember`, `nama`, `alamat`, `tanggal lahir`, `startmember`, `endmember`) VALUES
-(1, 'irvan', 'bandung', '2015-12-12', '2015-12-12', '2015-12-14'),
-(2, 'irvan', 'bandung', '2015-12-12', '2015-12-12', '2015-12-14');
+INSERT INTO `customer` (`kodemember`, `nama`, `alamat`, `tanggallahir`, `startmember`, `endmember`) VALUES
+(1, 'pembeli1', 'jl. babi1', '1994-05-29', '2015-12-21', '2016-12-21'),
+(2, 'pembeli2', 'jl. babi2', '1994-06-27', '2015-12-23', '2016-12-23'),
+(3, 'pembeli3', 'sadfasdf', '0000-00-00', '0000-00-00', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -49,7 +50,7 @@ INSERT INTO `customer` (`kodemember`, `nama`, `alamat`, `tanggal lahir`, `startm
 -- Table structure for table `history`
 --
 
-CREATE TABLE IF NOT EXISTS `history` (
+CREATE TABLE `history` (
   `id` varchar(100) NOT NULL,
   `nama` varchar(1000) NOT NULL,
   `perubahan` mediumtext NOT NULL,
@@ -63,22 +64,11 @@ CREATE TABLE IF NOT EXISTS `history` (
 -- Table structure for table `laporanbulanan`
 --
 
-CREATE TABLE IF NOT EXISTS `laporanbulanan` (
-  `bulan` int(10) NOT NULL,
-  `tahun` int(10) NOT NULL,
-  `totalpendapatan` decimal(65,0) NOT NULL,
-  `persediaanawal` decimal(65,0) NOT NULL,
-  `pembelian` decimal(65,0) NOT NULL,
-  `tersediauntukdijual` decimal(65,0) NOT NULL,
-  `persediaanakhir` decimal(65,0) NOT NULL,
-  `hargapokokpenjualan` decimal(65,0) NOT NULL,
-  `labakotor` decimal(65,0) NOT NULL,
-  `totalbiayaoperasi` decimal(65,0) NOT NULL,
-  `labaoperasi` decimal(65,0) NOT NULL,
-  `biayabunga` decimal(65,0) NOT NULL,
-  `labasebelumpajak` decimal(65,0) NOT NULL,
-  `biayapajak` decimal(65,0) NOT NULL,
-  `lababersih` decimal(65,0) NOT NULL
+CREATE TABLE `laporanbulanan` (
+  `date` date NOT NULL,
+  `menu` varchar(1000) NOT NULL,
+  `quantity` decimal(65,0) NOT NULL,
+  `harga` decimal(65,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -87,18 +77,10 @@ CREATE TABLE IF NOT EXISTS `laporanbulanan` (
 -- Table structure for table `laporanharian`
 --
 
-CREATE TABLE IF NOT EXISTS `laporanharian` (
+CREATE TABLE `laporanharian` (
   `date` date NOT NULL,
   `TotalPemasukkan` decimal(65,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `laporanharian`
---
-
-INSERT INTO `laporanharian` (`date`, `TotalPemasukkan`) VALUES
-('2015-12-12', '21600'),
-('2015-12-12', '21600');
 
 -- --------------------------------------------------------
 
@@ -106,7 +88,7 @@ INSERT INTO `laporanharian` (`date`, `TotalPemasukkan`) VALUES
 -- Table structure for table `laporanmingguan`
 --
 
-CREATE TABLE IF NOT EXISTS `laporanmingguan` (
+CREATE TABLE `laporanmingguan` (
   `StartDate` date NOT NULL,
   `EndDate` date NOT NULL,
   `TotalPemasukkan` decimal(65,0) NOT NULL
@@ -118,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `laporanmingguan` (
 -- Table structure for table `menu`
 --
 
-CREATE TABLE IF NOT EXISTS `menu` (
+CREATE TABLE `menu` (
   `id` varchar(10) NOT NULL,
   `nama` varchar(100) NOT NULL,
   `komposisi` varchar(1000) NOT NULL,
@@ -131,7 +113,11 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`id`, `nama`, `komposisi`, `harga`, `kuantitas`) VALUES
-('001', 'kue', 'gula 2 kg, air 1 l', '20000', 1);
+('MN1', 'Capuccino', 'gula, bubuk kopi,air', '20000', 50),
+('MN2', 'Capuccino', 'gula, bubuk kopi,air', '20000', 50),
+('MN3', 'Capuccino', 'gula, bubuk kopi,air', '20000', 50),
+('MN4', 'Espresso', 'bubuk kopi,air', '20000', 50),
+('MN5', 'Frapucinno', 'gula merah, bubuk kopi, air', '20000', 50);
 
 -- --------------------------------------------------------
 
@@ -139,10 +125,10 @@ INSERT INTO `menu` (`id`, `nama`, `komposisi`, `harga`, `kuantitas`) VALUES
 -- Table structure for table `order`
 --
 
-CREATE TABLE IF NOT EXISTS `order` (
+CREATE TABLE `order` (
   `nomerOrder` int(255) NOT NULL,
-  `Id` int(10) NOT NULL,
-  `Date` datetime NOT NULL,
+  `Id` varchar(10) NOT NULL,
+  `Date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Pesanan` varchar(1000) NOT NULL,
   `Quantity` decimal(65,0) NOT NULL,
   `Diskon` decimal(65,0) NOT NULL,
@@ -155,9 +141,7 @@ CREATE TABLE IF NOT EXISTS `order` (
 --
 
 INSERT INTO `order` (`nomerOrder`, `Id`, `Date`, `Pesanan`, `Quantity`, `Diskon`, `HargaSatuan`, `HargaAkhir`) VALUES
-(1, 1, '2015-12-12 00:00:00', 'kue', '2', '10', '2000', '3600'),
-(1, 2, '2015-12-12 00:00:00', 'nasi', '2', '10', '10000', '18000'),
-(1, 1, '2015-12-12 00:00:00', 'nasi', '2', '10', '10000', '18000');
+(1, 'MN1', '2015-12-22 15:41:45', 'Capuccino', '2', '10', '20000', '18000');
 
 -- --------------------------------------------------------
 
@@ -165,7 +149,7 @@ INSERT INTO `order` (`nomerOrder`, `Id`, `Date`, `Pesanan`, `Quantity`, `Diskon`
 -- Table structure for table `pegawai`
 --
 
-CREATE TABLE IF NOT EXISTS `pegawai` (
+CREATE TABLE `pegawai` (
   `nik` int(10) NOT NULL,
   `nama` varchar(1000) NOT NULL,
   `alamat` varchar(1000) NOT NULL,
@@ -174,18 +158,39 @@ CREATE TABLE IF NOT EXISTS `pegawai` (
   `gaji` decimal(65,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `pegawai`
+--
+
+INSERT INTO `pegawai` (`nik`, `nama`, `alamat`, `jabatan`, `tanggallahir`, `gaji`) VALUES
+(1, 'irvan', 'nomaden', 'slave', '1994-12-19', '10000000'),
+(2, 'renaldy', 'rumahrenaldy', 'ceo', '1994-06-27', '20000000'),
+(3, 'renaldy2', 'rumahrenaldy2', 'ceo2', '1994-06-27', '20000000'),
+(4, 'renaldy3', 'rumahrenaldy3', 'ceo3', '1994-06-27', '20000000'),
+(5, 'renaldy4', 'rumah', 'ceo', '1994-12-12', '20000000');
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `stock`
 --
 
-CREATE TABLE IF NOT EXISTS `stock` (
+CREATE TABLE `stock` (
   `id` varchar(10) NOT NULL,
   `nama` varchar(100) NOT NULL,
-  `jumlah` varchar(100) NOT NULL,
-  `hargaTotal` varchar(100) NOT NULL
+  `jumlah` int(100) NOT NULL,
+  `hargaTotal` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `stock`
+--
+
+INSERT INTO `stock` (`id`, `nama`, `jumlah`, `hargaTotal`) VALUES
+('1', 'gula', 20, '2000'),
+('2', 'gula merah', 11, '2000'),
+('3', 'bubuk kopi', 20, '2000'),
+('4', 'bubuk susu', 20, '2000');
 
 -- --------------------------------------------------------
 
@@ -193,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `stock` (
 -- Table structure for table `supplier`
 --
 
-CREATE TABLE IF NOT EXISTS `supplier` (
+CREATE TABLE `supplier` (
   `nis` int(10) NOT NULL,
   `nama` varchar(1000) NOT NULL,
   `alamat` varchar(1000) NOT NULL,
@@ -205,7 +210,9 @@ CREATE TABLE IF NOT EXISTS `supplier` (
 --
 
 INSERT INTO `supplier` (`nis`, `nama`, `alamat`, `nomertelepon`) VALUES
-(1, 'hahaha', 'abcd', '');
+(1, 'indofood', 'dagodag', '123124'),
+(2, 'indoindoan', 'ogaddago', '134235'),
+(3, 'indo', 'doasf', '1312');
 
 -- --------------------------------------------------------
 
@@ -213,13 +220,20 @@ INSERT INTO `supplier` (`nis`, `nama`, `alamat`, `nomertelepon`) VALUES
 -- Table structure for table `user`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE `user` (
   `id` varchar(100) NOT NULL,
   `nama` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `role` varchar(1000) NOT NULL,
   `permission` varchar(10000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `nama`, `password`, `role`, `permission`) VALUES
+('', 'reg', '202cb962ac59075b964b07152d234b70', 'admin', '1100');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
