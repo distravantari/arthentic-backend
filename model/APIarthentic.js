@@ -60,6 +60,56 @@ APIarthentic.prototype.handleRoutes = function(router,connection,md5)
    });
     //--registrasi end...
 
+
+    router.post("/insertOrder",function(req,res){
+
+          var id = req.body.id;
+          var quantity = req.body.quantity;
+          var diskon = req.body.diskon;
+
+          var query = "select * from `menu` where id = '"+id+"'";
+          //sukses, kembalikan total harga
+          connection.query(query,function(err,success){
+              if(err){
+                  res.json({"message":"gagal menampilkan menu"+query})
+              }else{
+                  //masukin ke database order
+                  var nomororder = req.body.nomororder;
+                  // id sama kaya yang diatas
+                  var nama = success[0].nama;
+                  var harga = success[0].harga;
+                  var hargaAkhir = ( (Number(harga) - ( Number(harga)*Number(diskon)/100)) *Number(quantity) );
+
+                  var query2 = "INSERT INTO `order` (nomerorder,id,pesanan,quantity,diskon,hargasatuan,hargaAkhir) VALUES (?,?,?,?,?,?,?)";
+                  var table = [nomororder,id,nama,quantity,diskon,harga,hargaAkhir];
+                  query2 = mysql.format(query2,table);
+                  connection.query(query2,function(err,rows){
+                    if (err) {
+                      res.json({"message":"err .."+err});
+                    }else{
+                      res.json({"message":"berhasil insert order"});
+                    }
+                  })
+              }
+          });
+      });
+
+//--update menu selesai...
+      router.post("/showMenu",function(req,res){
+
+          // var id = req.body.id;
+          var query = "select * from `menu`";
+          //sukses, kembalikan total harga
+          connection.query(query,function(err,success){
+              if(err){
+                  res.json({"message":"gagal menampilkan menu"+query})
+              }else{
+                  res.json({"message":success});
+              }
+          });
+      });
+
+
     //login
     router.post("/login",function(req,res)
     {
@@ -242,8 +292,22 @@ router.post("/cekPermission",function(req,res){
       });
     });
 //--cek permission end...
+
+  // delete stok
+  router.post("/deleteStok",function(req,res){
+    var id = req.body.id;
+    connection.query("DELETE FROM `stock` WHERE id = '"+ id+"'",function(err,rows){
+      if (err) {
+        res.json({"message":"err..."+err});
+      }else{
+        res.json({"message":"berhasil hapus stok"});
+      }
+    })
+  })
+
+
 //insert stock param(id, nama, jumlah, harga total) harga total sesuai kuantitas
-    router.post("/insertBarang",function(req,res){
+    router.post("/insertStok",function(req,res){
        //request id
        var id = req.body.id;
        //request nama
@@ -430,6 +494,17 @@ router.post("/cekPermission",function(req,res){
 
    });
     //--tambah stock end..
+
+    //untuk show smua stock yang aad di table stock
+    router.post("/showstok",function(req,res){
+      connection.query("SELECT * FROM `stock`",function(err,rows){
+        if (err) {
+          res.json ({"message":"err .."+err});
+        }else {
+          res.json({"message":rows});
+        }
+      });
+    });
 
 
 //update nama param (id, namaBaru)
@@ -1109,7 +1184,7 @@ connection.query(query1,function(err,temp)
   if(temp.length == 0 )
   {
       //query insert
-      var query = "INSERT INTO `customer`(`kodemember`, `nama`, `alamat`, `tanggallahir`, `startmember`, `endmember`) VALUES (?,?,?,?,?,?)"
+      var query = "INSERT INTO `customer`(`kodemember`, `nama`, `alamat`, `tanggal lahir`, `startmember`, `endmember`) VALUES (?,?,?,?,?,?)"
       var table = [kodemember,nama,alamat,tanggallahir,startmember,endmember];
       query = mysql.format(query, table);
 
@@ -1148,7 +1223,7 @@ router.post("/updateCustomer",function(req,res){
   var startmember = req.body.startmember;
   var endmember = req.body.endmember;
 //query checking id jika sudah ada yang sama
-var query = "UPDATE `customer` SET `nama`=?,`alamat`=?,`tanggallahir`=?, `startmember`=?, `endmember`=? WHERE `kodemember`=?";
+var query = "UPDATE `customer` SET `nama`=?,`alamat`=?,`tanggal lahir`=?, `startmember`=?, `endmember`=? WHERE `kodemember`=?";
 var table = [nama,alamat,tanggallahir,startmember,endmember,kodemember];
 query = mysql.format(query, table);
 
