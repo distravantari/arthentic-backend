@@ -1287,7 +1287,7 @@ query = mysql.format(query, table);
     }
     else
     {
-        res.json({"message":"Berhasil Update Supplier"});
+        res.json({"message":"Berhasil Update Customer"});
     }
   });
 });
