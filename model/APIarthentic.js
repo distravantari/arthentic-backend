@@ -94,10 +94,22 @@ APIarthentic.prototype.handleRoutes = function(router,connection,md5)
           });
       });
 
+      router.post("/showMenuById",function(req,res){
+        var id = req.body.id;
+        // var id = req.body.id;
+        var query = "select * from `menu` WHERE id = '"+id+"'";
+        connection.query(query,function(err,success){
+            if(err){
+                res.json({"message":"gagal menampilkan menu"+query})
+            }else{
+                res.json({"message":success});
+            }
+        });
+      })
+
 //--update menu selesai...
       router.post("/showMenu",function(req,res){
 
-          // var id = req.body.id;
           var query = "select * from `menu`";
           //sukses, kembalikan total harga
           connection.query(query,function(err,success){
