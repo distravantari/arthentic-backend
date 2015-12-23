@@ -1349,7 +1349,7 @@ router.post("/hitungHarian",function(req,res){
     //var nomerorder=req.body.nomerorder;
     var totalHarga=Number(0);
     // pilih harga berdasarkan tanggal
-    var query = "select pesanan,quantity,diskon,hargaAkhir from `order` where date = ?";
+    var query = "select * from `order` where date = ?";
     var table = [date];
     query = mysql.format(query,table);
 
