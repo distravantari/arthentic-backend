@@ -1365,40 +1365,23 @@ router.post("/hitungHarian",function(req,res){
 });
 
 router.post("/insertDBHarian",function(req,res){
-
-    // param tanggal
     var date = req.body.date;
-    //var nomerorder=req.body.nomerorder;
-    var totalHarga=Number(0);
-    // pilih harga berdasarkan tanggal
-    var query = "select quantity,diskon,hargaAkhir from `order` where date = ?";
-    var table = [date];
-    query = mysql.format(query,table);
+    var totalHarga = req.body.totalHarga;
 
-    //sukses, kembalikan total harga
-    connection.query(query,function(err,success){
-        if(err){
-            res.json({"message":"tidak dapat menghitung total harian"+query})
-        }else{
-            for(i=0;i<success.length;i++){
-                totalHarga = Number(totalHarga)+Number(success[i].hargaAkhir);
-           }
-        //query untuk insert ke database Laporan Keuangan Harian
-        var query2 = "insert into `laporanharian` (date,TotalPemasukkan) VALUES (?,?)";
-        var table2 = [date,totalHarga];
-        query2 = mysql.format(query2,table2)
+    //query untuk insert ke database Laporan Keuangan Harian
+    var query2 = "insert into `laporanharian` (date,TotalPemasukkan) VALUES (?,?)";
+    var table2 = [date,totalHarga];
+    query2 = mysql.format(query2,table2)
 
-        connection.query(query2,function(err,success){
-          if(err){
-            res.json({"message":"gagal memasukkan ke database harian"+query2});
-          }
-          else{
-            res.json({"message":"berhasil memasukkan ke database harian"+query2});
+    connection.query(query2,function(err,success){
+      if(err){
+        res.json({"message":"err .."+query2});
+      }
+      else{
+        res.json({"message":"success"});
 
-          }
+      }
 
-        });
-        }
     });
 });
 
