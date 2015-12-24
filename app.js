@@ -5,6 +5,7 @@ var express = require("express"),
   http = require('http');
 
 var APIarthenticModel = require("./model/APIarthentic.js");
+var dashboardModel = require("./model/dashboard.js");
 var app = express();
 
 var jwt = require('jsonwebtoken'); //jwt
@@ -108,6 +109,7 @@ connect.prototype.configureExpress = function(connection) {
       app.use('/api', router);
 
 			var APIarthentic = new APIarthenticModel (router,connection,md5);
+			var dashboard = new dashboardModel (router,connection,md5);
       //var keuangan = new keuanganModel(router,connection,md5);
       //var order = new orderModel(router,connection,md5);
 //      var driver = new driverModel(router,connection,md5);
