@@ -6,6 +6,9 @@ var express = require("express"),
 
 var APIarthenticModel = require("./model/APIarthentic.js");
 var dashboardModel = require("./model/dashboard.js");
+var authModel = require("./model/auth.js");
+var reportModel = require("./model/report.js");
+var menuModel = require("./model/menu.js");
 var app = express();
 
 var jwt = require('jsonwebtoken'); //jwt
@@ -110,12 +113,9 @@ connect.prototype.configureExpress = function(connection) {
 
 			var APIarthentic = new APIarthenticModel (router,connection,md5);
 			var dashboard = new dashboardModel (router,connection,md5);
-      //var keuangan = new keuanganModel(router,connection,md5);
-      //var order = new orderModel(router,connection,md5);
-//      var driver = new driverModel(router,connection,md5);
-//      var transaction = new transactionModel(router,connection,md5);
-//      var geopoint = new geopointModel(router,connection,md5);
-//      var smtp = new smtpModel(router,connection,md5);
+      var auth = new authModel(router,connection,md5);
+			var report = new reportModel (router,connection,md5);
+			var menu = new menuModel (router,connection,md5);
       self.startServer();
 };
 
