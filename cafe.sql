@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 25 Des 2015 pada 10.38
+-- Generation Time: 25 Des 2015 pada 14.30
 -- Versi Server: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -57,6 +57,27 @@ CREATE TABLE IF NOT EXISTS `history` (
   `row` int(255) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `invoce`
+--
+
+CREATE TABLE IF NOT EXISTS `invoce` (
+`id` int(10) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `kuantitas` varchar(100) NOT NULL,
+  `totalSatuan` varchar(100) NOT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data untuk tabel `invoce`
+--
+
+INSERT INTO `invoce` (`id`, `name`, `kuantitas`, `totalSatuan`) VALUES
+(2, 'Capuccino', '100', '1980000'),
+(3, 'Capuccino', '13', '254800');
 
 -- --------------------------------------------------------
 
@@ -170,7 +191,8 @@ INSERT INTO `order` (`nomerOrder`, `Id`, `Date`, `Pesanan`, `Quantity`, `Diskon`
 (2, 'mn11', '2015-12-25', 'choco', '1001', '1', '90000', '89189100'),
 (1, 'mn12', '2015-12-25', 'asda', '100', '12', '123', '10824'),
 (1, 'mn11', '2015-12-25', 'choco', '12', '12', '90000', '950400'),
-(1, 'mn12', '2015-12-25', 'asda', '12', '1', '123', '1461');
+(1, 'mn12', '2015-12-25', 'asda', '12', '1', '123', '1461'),
+(2, 'MN11', '2015-12-25', 'choco', '12', '1', '90000', '1069200');
 
 -- --------------------------------------------------------
 
@@ -285,6 +307,25 @@ INSERT INTO `user` (`id`, `nama`, `password`, `role`, `permission`) VALUES
 ('', 'reg', '202cb962ac59075b964b07152d234b70', 'admin', '1100'),
 ('', 'req', '202cb962ac59075b964b07152d234b70', '1110', '1110');
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `invoce`
+--
+ALTER TABLE `invoce`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `invoce`
+--
+ALTER TABLE `invoce`
+MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

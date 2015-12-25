@@ -9,6 +9,7 @@ var dashboardModel = require("./model/dashboard.js");
 var authModel = require("./model/auth.js");
 var reportModel = require("./model/report.js");
 var menuModel = require("./model/menu.js");
+var invoiceModel = require("./model/invoice.js");
 var app = express();
 
 var jwt = require('jsonwebtoken'); //jwt
@@ -116,6 +117,7 @@ connect.prototype.configureExpress = function(connection) {
       var auth = new authModel(router,connection,md5);
 			var report = new reportModel (router,connection,md5);
 			var menu = new menuModel (router,connection,md5);
+			var invoice = new invoiceModel (router,connection,md5);
       self.startServer();
 };
 

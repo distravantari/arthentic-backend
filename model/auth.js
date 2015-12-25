@@ -77,7 +77,7 @@ auth.prototype.handleRoutes = function(router,connection,md5)
           //jika nama dan password cocok sama DB
           if(temp.length != 1)
           {
-              res.json({"message":"Nama atau password salah"});
+              res.json({"message":"Nama atau password salah "});
           }
           else if(err)
           {
