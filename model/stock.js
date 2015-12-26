@@ -349,18 +349,18 @@ router.post("/deleteStok",function(req,res){
 })
 
 router.post("/reorderStok",function(req,res){
-  var id = req.body.id;
-  var query = "select jumlah FROM `stock` where id= "+id;
+  var nama = req.body.nama;
+  var query = "select jumlah FROM `stock` where nama= '"+nama+"'";
   connection.query(query,function(err,rows){
     if (err) {
       res.json({"message":"err..."+rows});
     }else{
       var jumlah = Number(rows[0].jumlah);
       if (jumlah<5) {
-        res.json({"message":"stock ini hampir habis"});
+        res.json({"message":"stock ini hampir habis "+jumlah});
       }
       else {
-        res.json({"message":"stok aman"});
+        res.json({"message":"stok aman "+jumlah});
       }
 
     }
