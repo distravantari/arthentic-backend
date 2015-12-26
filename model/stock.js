@@ -60,14 +60,15 @@ stock.prototype.handleRoutes = function(router,connection,md5)
   // kurangin stok param(id,jumPengurangan)
   router.post("/kurangStok",function(req,res){
      //request nama
-     var id = req.body.id;
+     //var id = req.body.id;
+     var nama = req.body.nama;
      //request jumlah
      var jumPengurangan = req.body.jumPengurangan;
 
      //query cek id di db
-     var queryKode = "select id from stock where id = ?" ;
-     var tableKode = [id];
-     queryKode = mysql.format(queryKode,tableKode);
+     var queryKode = "select id from stock where nama ='"+nama+"'" ;
+     //var tableKode = [nama];
+    // queryKode = mysql.format(queryKode,tableKode);
      connection.query(queryKode,function(err,temp)
      {
          //jika id tidak ada di db
@@ -82,9 +83,9 @@ stock.prototype.handleRoutes = function(router,connection,md5)
          else
          {
               //query jumlah stock cukup apa ga
-              var query1 = "select jumlah,hargaTotal from stock where id = ?";
-              var table1 = [id];
-              query1 = mysql.format(query1,table1);
+              var query1 = "select jumlah,hargaTotal from stock where nama = '"+nama+"'";
+              //var table1 = [id];
+            //  query1 = mysql.format(query1,table1);
 
               connection.query(query1,function(err,temp)
               {
@@ -92,10 +93,10 @@ stock.prototype.handleRoutes = function(router,connection,md5)
                   if(temp[0].jumlah-jumPengurangan>=0 )
                   {
                       //query pengurangan
-                      var query = "UPDATE `stock` SET `hargaTotal`=?,`jumlah`=? WHERE id = ?";
+                      var query = "UPDATE `stock` SET `hargaTotal`=?,`jumlah`=? WHERE nama ='"+nama+"'";
                       var jumStokbaru = temp[0].jumlah - jumPengurangan;
-                      var hargaTotalBaru = temp[0].hargaTotalBaru - (temp[0].hargaTotal / temp[0].jumlah);
-                      var table = [hargaTotalBaru,jumStokbaru,id];
+                      var hargaTotalBaru = Number(temp[0].hargaTotal - (temp[0].hargaTotal / temp[0].jumlah));
+                      var table = [hargaTotalBaru,jumStokbaru];
                       query = mysql.format(query, table);
 
                       connection.query(query,function(err,temp){
@@ -106,7 +107,7 @@ stock.prototype.handleRoutes = function(router,connection,md5)
                       else
                       {
 
-                          res.json({"message":"pengurangan stok berhasil.. sisa stok "+jumStokbaru});
+                          res.json({"message":"pengurangan stok berhasil.. sisa stok "+jumStokbaru+query});
                       }
                       });
 
@@ -114,7 +115,7 @@ stock.prototype.handleRoutes = function(router,connection,md5)
                   //Jika stok stock tidak cukup
                   else
                   {
-                      res.json({"message":"Stok tidak cukup.. sisa stok "+temp[0].jumlah});
+                      res.json({"message":"Stok tidak cukup.. sisa stok "+temp[0].jumlah+query});
                   }
               });
          }
