@@ -1,6 +1,6 @@
 var mysql   = require("mysql");
 
-function auth(router,connection,md5) {
+function pengeluaran(router,connection,md5) {
     var self = this;
     self.handleRoutes(router,connection,md5);
 }

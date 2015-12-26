@@ -205,6 +205,17 @@ stock.prototype.handleRoutes = function(router,connection,md5)
     });
   });
 
+// mendapatkan id dari sebuah stock
+router.post("/getStokId",function(req,res){
+  var nama = req.body.nama;
+  connection.query("SELECT * FROM `stock` WHERE nama = '"+nama+"'",function(err,rows){
+    if (err) {
+      res.json({"message":"gagal mendapatkan id stock"});
+    }else{
+      res.json({"message":rows[0].id});
+    }
+  })
+});
 
 //update nama param (id, namaBaru)
 router.post("/updateStock",function(req,res)
@@ -332,6 +343,25 @@ router.post("/deleteStok",function(req,res){
       res.json({"message":"err..."+err});
     }else{
       res.json({"message":"berhasil hapus stok"});
+    }
+  })
+})
+
+router.post("/reorderStok",function(req,res){
+  var id = req.body.id;
+  var query = "select jumlah FROM `stock` where id= "+id;
+  connection.query(query,function(err,rows){
+    if (err) {
+      res.json({"message":"err..."+rows});
+    }else{
+      var jumlah = Number(rows[0].jumlah);
+      if (jumlah<5) {
+        res.json({"message":"stock ini hampir habis"});
+      }
+      else {
+        res.json({"message":"stok aman"});
+      }
+
     }
   })
 })
