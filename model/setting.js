@@ -68,7 +68,7 @@ setting.prototype.handleRoutes = function(router,connection,md5)
       if (err) {
         res.json({"message":"gagal mendapatkan pajak pendapatan"});
       }else{
-        res.json({"message":"berhasil mendapatkan pajak pendapatan"});
+        res.json({"message":rows});
       }
     })
 });
