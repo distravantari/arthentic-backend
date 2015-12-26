@@ -176,6 +176,18 @@ auth.prototype.handleRoutes = function(router,connection,md5)
    });
    //--delete user end...
 
+   router.get("/user",function(req,res){
+     var nama = req.params.nama || req.query.nama;
+     var query = "SELECT * FROM `user` WHERE nama = '"+nama+"'";
+     connection.query(query,function(err,rows){
+       if (err) {
+         res.json({"message":"err.."+err});
+       }else{
+         res.json({"message":rows});
+       }
+     })
+   })
+
 
 //cekPermission
 router.post("/cekPermission",function(req,res){
