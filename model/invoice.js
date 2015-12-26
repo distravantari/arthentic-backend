@@ -11,9 +11,10 @@ invoice.prototype.handleRoutes = function(router,connection,md5)
     var name = req.body.name;
     var kuantitas = req.body.kuantitas;
     var satuan = req.body.satuan;
+    var diskon = req.body.diskon;
 
-    var query = "INSERT INTO `invoce`(`name`, `kuantitas`, `totalSatuan`) VALUES (?,?,?)";
-    var table = [name,kuantitas,satuan];
+    var query = "INSERT INTO `invoce`(`name`, `kuantitas`, `totalSatuan`, `discount`) VALUES (?,?,?,?)";
+    var table = [name,kuantitas,satuan,diskon];
     query = mysql.format(query,table);
 
     connection.query(query,function(err,rows){
@@ -23,7 +24,17 @@ invoice.prototype.handleRoutes = function(router,connection,md5)
         res.json({"message":"successfully added to invoice"});
       }
     })
-  })
+  });
+
+  router.get("/invoices",function(req,res){
+    connection.query("SELECT * FROM `invoce`",function(err,rows){
+      if (err) {
+        res.json({"message":"err..."});
+      }else{
+        res.json({"message":rows});
+      }
+    })
+  });
 }
 
 
