@@ -357,10 +357,10 @@ router.post("/reorderStok",function(req,res){
     }else{
       var jumlah = Number(rows[0].jumlah);
       if (jumlah<5) {
-        res.json({"message":"stock ini hampir habis "+jumlah});
+        res.json({"message":"stock ini hampir habis"});
       }
       else {
-        res.json({"message":"stok aman "+jumlah});
+        res.json({"message":"stok aman"});
       }
 
     }
