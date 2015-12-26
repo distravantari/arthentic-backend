@@ -4,12 +4,16 @@ var express = require("express"),
 	md5 = require('MD5'),
   http = require('http');
 
-var APIarthenticModel = require("./model/APIarthentic.js");
 var dashboardModel = require("./model/dashboard.js");
 var authModel = require("./model/auth.js");
 var reportModel = require("./model/report.js");
+var dataModel = require("./model/data.js");
 var menuModel = require("./model/menu.js");
 var invoiceModel = require("./model/invoice.js");
+var orderModel = require("./model/order.js");
+var historyModel = require("./model/order.js");
+var stockModel = require("./model/stock.js");
+var pengeluaranModel = require("./model/pengeluaran.js");
 var app = express();
 
 var jwt = require('jsonwebtoken'); //jwt
@@ -111,13 +115,16 @@ connect.prototype.configureExpress = function(connection) {
 
 
       app.use('/api', router);
-
-			var APIarthentic = new APIarthenticModel (router,connection,md5);
 			var dashboard = new dashboardModel (router,connection,md5);
       var auth = new authModel(router,connection,md5);
 			var report = new reportModel (router,connection,md5);
 			var menu = new menuModel (router,connection,md5);
-			var invoice = new invoiceModel (router,connection,md5);
+			var data = new dataModel (router,connection,md5);
+			var order = new orderModel (router,connection,md5);
+			var pengeluaran = new pengeluaranModel (router,connection,md5);
+			var stock = new stockModel (router,connection,md5);
+			var invoice = new invoiceModel(router,connection,md5);
+			var history = new historyModel(router,connection,md5);
       self.startServer();
 };
 
