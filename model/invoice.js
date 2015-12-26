@@ -12,9 +12,10 @@ invoice.prototype.handleRoutes = function(router,connection,md5)
     var kuantitas = req.body.kuantitas;
     var satuan = req.body.satuan;
     var diskon = req.body.diskon;
+    var hargaSatuan = req.body.hargaSatuan;
 
-    var query = "INSERT INTO `invoce`(`name`, `kuantitas`, `totalSatuan`, `discount`) VALUES (?,?,?,?)";
-    var table = [name,kuantitas,satuan,diskon];
+    var query = "INSERT INTO `invoce`(`name`, `hargaSatuan` ,`kuantitas`, `totalSatuan`, `discount`) VALUES (?,?,?,?,?)";
+    var table = [name,hargaSatuan,kuantitas,satuan,diskon];
     query = mysql.format(query,table);
 
     connection.query(query,function(err,rows){
