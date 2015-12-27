@@ -250,6 +250,21 @@ router.post("/cekPermission",function(req,res){
      }
      });
    });
+
+   router.post("/updateStatus",function(req,res){
+     var status = req.body.status;
+     var nama = req.body.nama;
+     var query = "UPDATE `user` SET `status`='"+status+"' WHERE `nama`='"+nama+"'";
+     connection.query(query,function(err,rows){
+       if (err) {
+         res.json({"message":"gagal ganti status"});
+       }else{
+         res.json({"message":"berhasil ganti status"});
+       }
+     })
+   })
+
+
 }
 
 
