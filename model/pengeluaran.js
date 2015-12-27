@@ -91,7 +91,7 @@ pengeluaran.prototype.handleRoutes = function(router,connection,md5)
   router.post("/showPengeluaran",function(req,res){
     var bulan = req.body.bulan;
     var tahun = req.body.tahun;
-      var query = "select `namaPengeluaran`,`jumlah` from  `pengeluaran` where `bulan`='"+bulan+"' AND `tahun` = '"+tahun+"'" ;
+      var query = "select * from  `pengeluaran` where `bulan`='"+bulan+"' AND `tahun` = '"+tahun+"'" ;
       connection.query(query,function(err,success){
           if(err){
               res.json({"message":"gagal menampilkan pengeluaran"});
