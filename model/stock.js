@@ -107,7 +107,7 @@ stock.prototype.handleRoutes = function(router,connection,md5)
                       else
                       {
 
-                          res.json({"message":"pengurangan stok berhasil.. sisa stok "+jumStokbaru+query});
+                          res.json({"message":"pengurangan stok berhasil.. sisa stok "+jumStokbaru});
                       }
                       });
 
