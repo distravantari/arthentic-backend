@@ -58,7 +58,6 @@ auth.prototype.handleRoutes = function(router,connection,md5)
  });
   //--registrasi end...
 
-
   //login
   router.post("/login",function(req,res)
   {
@@ -177,8 +176,8 @@ auth.prototype.handleRoutes = function(router,connection,md5)
    //--delete user end...
 
    router.get("/user",function(req,res){
-     var nama = req.params.nama || req.query.nama;
-     var query = "SELECT * FROM `user` WHERE nama = '"+nama+"'";
+     var status = req.params.status || req.query.status;
+     var query = "SELECT * FROM `user` WHERE status = '"+status+"'";
      connection.query(query,function(err,rows){
        if (err) {
          res.json({"message":"err.."+err});
