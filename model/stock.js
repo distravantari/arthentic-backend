@@ -115,7 +115,7 @@ stock.prototype.handleRoutes = function(router,connection,md5)
                   //Jika stok stock tidak cukup
                   else
                   {
-                      res.json({"message":"Stok tidak cukup.. sisa stok "+temp[0].jumlah});
+                      res.json({"message":"error"});
                   }
               });
          }
