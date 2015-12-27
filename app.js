@@ -14,6 +14,7 @@ var orderModel = require("./model/order.js");
 var historyModel = require("./model/history.js");
 var stockModel = require("./model/stock.js");
 var pengeluaranModel = require("./model/pengeluaran.js");
+var settingModel = require("./model/setting.js");
 var app = express();
 
 var jwt = require('jsonwebtoken'); //jwt
@@ -125,6 +126,7 @@ connect.prototype.configureExpress = function(connection) {
 			var stock = new stockModel (router,connection,md5);
 			var invoice = new invoiceModel(router,connection,md5);
 			var history = new historyModel(router,connection,md5);
+			var setting = new settingModel(router,connection,md5);
       self.startServer();
 };
 

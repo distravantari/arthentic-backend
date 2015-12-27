@@ -111,18 +111,18 @@ report.prototype.handleRoutes = function(router,connection,md5)
           if(err){
               res.json({"message":"tidak dapat menghitung total harian"+query})
           }else{
-              var pesanan = "";
-              var quantity = "";
-              var diskon= "";
-              var hargaAkhir = "";
-              for(i=0;i<success.length;i++){
-                  pesanan+= success[i].pesanan+",";
-                  quantity+= success[i].quantity+",";
-                  diskon+= success[i].diskon+",";
-                  hargaAkhir+= success[i].hargaAkhir+",";
-                  totalHarga = Number(totalHarga)+Number(success[i].hargaAkhir);
-             }
-              res.json({"pesanan": pesanan,"quantity":quantity,"diskon":diskon,"Harga Akhir":hargaAkhir,"Total Harga":totalHarga});
+            //   var pesanan = "";
+            //   var quantity = "";
+            //   var diskon= "";
+            //   var hargaAkhir = "";
+            //   for(i=0;i<success.length;i++){
+            //       pesanan+= success[i].pesanan+",";
+            //       quantity+= success[i].quantity+",";
+            //       diskon+= success[i].diskon+",";
+            //       hargaAkhir+= success[i].hargaAkhir+",";
+            //       totalHarga = Number(totalHarga)+Number(success[i].hargaAkhir);
+            //  }
+              res.json({"message":success});
 
           }
       });
