@@ -8,7 +8,6 @@ report.prototype.handleRoutes = function(router,connection,md5)
 {
   // HARIAN
   router.post("/hitungHarian",function(req,res){
-
       // param tanggal
       var date = req.body.date;
       //var nomerorder=req.body.nomerorder;
@@ -52,7 +51,6 @@ report.prototype.handleRoutes = function(router,connection,md5)
 
 // MINGGUAN
   router.post("/hitungMingguan",function(req,res){
-
       // param tanggal
       var startdate = req.body.startdate;
       var enddate = req.body.enddate;
@@ -97,8 +95,7 @@ report.prototype.handleRoutes = function(router,connection,md5)
       });
   });
 
-  router.post("/showrincianBulanan",function(req,res){
-
+  router.post("/hitungBulanan",function(req,res){
       // param tanggal
       var bulan = req.body.bulan;
       var tahun = req.body.tahun;
@@ -131,56 +128,30 @@ report.prototype.handleRoutes = function(router,connection,md5)
       });
   });
 
-  router.post("/insertPendapatanBulanan",function(req,res){
+  router.post("/insertDBBulanan",function(req,res){
 
       // param tanggal
       var bulan = req.body.bulan;
       var tahun = req.body.tahun;
       //var nomerorder=req.body.nomerorder;
-      var totalHarga=Number(0);
+      var totalPengeluaran= req.body.totalPengeluaran;
+      var totalPendapatan= req.body.totalPendapatan;
+      var rincian = req.body.rincian;
+      var laba = req.body.laba;
       // pilih harga berdasarkan tanggal
-      var query = "select hargaAkhir from `order` where EXTRACT(MONTH from date)=? AND EXTRACT(YEAR from date)=?";
-      var table = [bulan,tahun];
+      var query = "INSERT INTO `laporanbulanan` (bulan,tahun,totalpendapatan,rincian,totalbiayaoperasional,laba) VALUES (?,?,?,?,?,?)";
+      var table = [bulan,tahun,totalPendapatan,totalPengeluaran,laba];
       query = mysql.format(query,table);
 
       //sukses, kembalikan total harga
       connection.query(query,function(err,success){
           if(err){
-              res.json({"message":"tidak dapat menghitung total bulanan"+query})
+            res.json({"message":"gagal memasukkan ke DB bulanan"})
           }else{
-              for(i=0;i<success.length;i++){
-                  totalHarga = Number(totalHarga)+Number(success[i].hargaAkhir);
-             }
-             query2 = "select hargaTotal from stock";
-             connection.query(query2,function(err,temp){
-               if(err){
-                 res.json({"message":"gagal hitung modal"});
-               }
-               else{
-                 var modal = Number(0);
-                 for (var i = 0; i < temp.length; i++) {
-                   modal=Number(modal)+Number(temp[i].hargaTotal);
-                 }
-                 var totalPendapatan = totalHarga-modal;
-                 var query3 = "insert into `laporanbulanan` (`bulan`,`tahun`,`totalpendapatan`) VALUES (?,?,?)";
-                 var table3 = [bulan,tahun,totalPendapatan];
-                 query3 = mysql.format(query3,table3);
-                 connection.query(query3,function(err,succ){
-                   if(err){
-                     res.json({"message":"gagal mendapatkan total pendapatan bersih"});
-                   }
-                   else{
-                     res.json({"message":"berhasil mendapatkan total pendapatan bersih"});
-                   }
-
-                 });
-               }
-
-             });
+            res.json({"message":"berhasil memasukkan ke DB bulanan"});
           }
       });
   });
+
 }
-
-
 module.exports = report;
