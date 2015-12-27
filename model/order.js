@@ -25,7 +25,7 @@ order.prototype.handleRoutes = function(router,connection,md5)
       //sukses, kembalikan total harga
       connection.query(query,function(err,success){
           if(err){
-              res.json({"message":"error"+query+hargaTotal});
+              res.json({"message":"error"});
           }
           else{
               res.json({"message":"Berhasil input order" + query + hargaTotal});
