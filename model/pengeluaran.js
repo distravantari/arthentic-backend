@@ -96,7 +96,7 @@ pengeluaran.prototype.handleRoutes = function(router,connection,md5)
           if(err){
               res.json({"message":"gagal menampilkan pengeluaran"});
           }else{
-              res.json({success});
+              res.json({"message":success});
           }
       });
   });
