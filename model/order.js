@@ -15,8 +15,7 @@ order.prototype.handleRoutes = function(router,connection,md5)
       var quantity = req.body.quantity;
       var diskon = req.body.diskon;
       var hargasatuan = req.body.hargasatuan;
-      var hargaDiskon = hargasatuan-(diskon/100*hargasatuan);
-      var hargaTotal = hargaDiskon*quantity;
+      var hargaTotal = req.body.hargaTotal;
       //query insert
       var query = "insert into `order` (nomerorder,id,date,pesanan,quantity,diskon,hargasatuan,hargaakhir) VALUES (?,?,?,?,?,?,?,?)";
       var table = [nomerorder,id,date,pesanan,quantity,diskon,hargasatuan,hargaTotal];
