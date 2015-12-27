@@ -97,52 +97,86 @@ report.prototype.handleRoutes = function(router,connection,md5)
       });
   });
 
+  router.post("/showrincianBulanan",function(req,res){
 
-
-
-
-  //bulanan
-
-  router.post("/insertDBBulanan",function(req,res){
-
+      // param tanggal
       var bulan = req.body.bulan;
       var tahun = req.body.tahun;
-      var totalpendapatanBulanan=Number(0);
-      var persediaanawal=0;
-      var pembelian=req.body.pembelian;
-      var labakotor = 0;
-      var lababersih=0;
-      var biayabunga = req.body.biayabunga;
-      var labasebelumpajak=0;
-      var biayapajak=req.body.biayapajak;
-      var totalbiayaoperasi=req.body.totalbiayaoperasi;
-      var query = "select TotalPemasukkan from `laporanharian` where EXTRACT(MONTH from date)=? AND EXTRACT(YEAR from date)=?";
+      //var nomerorder=req.body.nomerorder;
+      var totalHarga=Number(0);
+      // pilih harga berdasarkan tanggal
+      var query = "select pesanan,quantity,diskon,hargaAkhir from `order` where EXTRACT(MONTH from date)=? AND EXTRACT(YEAR from date)=?";
       var table = [bulan,tahun];
       query = mysql.format(query,table);
 
       //sukses, kembalikan total harga
       connection.query(query,function(err,success){
           if(err){
-              res.json({"message":"tidak dapat menghitung total pendapatan bulanan"+query})
+              res.json({"message":"tidak dapat menghitung total harian"+query})
+          }else{
+              var pesanan = "";
+              var quantity = "";
+              var diskon= "";
+              var hargaAkhir = "";
+              for(i=0;i<success.length;i++){
+                  pesanan+= success[i].pesanan+",";
+                  quantity+= success[i].quantity+",";
+                  diskon+= success[i].diskon+",";
+                  hargaAkhir+= success[i].hargaAkhir+",";
+                  totalHarga = Number(totalHarga)+Number(success[i].hargaAkhir);
+             }
+              res.json({"pesanan": pesanan,"quantity":quantity,"diskon":diskon,"Harga Akhir":hargaAkhir,"Total Harga":totalHarga});
+
+          }
+      });
+  });
+
+  router.post("/insertPendapatanBulanan",function(req,res){
+
+      // param tanggal
+      var bulan = req.body.bulan;
+      var tahun = req.body.tahun;
+      //var nomerorder=req.body.nomerorder;
+      var totalHarga=Number(0);
+      // pilih harga berdasarkan tanggal
+      var query = "select hargaAkhir from `order` where EXTRACT(MONTH from date)=? AND EXTRACT(YEAR from date)=?";
+      var table = [bulan,tahun];
+      query = mysql.format(query,table);
+
+      //sukses, kembalikan total harga
+      connection.query(query,function(err,success){
+          if(err){
+              res.json({"message":"tidak dapat menghitung total bulanan"+query})
           }else{
               for(i=0;i<success.length;i++){
-                  totalpendapatanBulanan = Number(totalpendapatanBulanan)+Number(success[i].TotalPemasukkan);
+                  totalHarga = Number(totalHarga)+Number(success[i].hargaAkhir);
              }
-          //query untuk insert ke database Laporan Keuangan Harian
-          var query2 = "insert into `laporanbulanan` (bulan,tahun,totalpendapatan) VALUES (?,?,?)";
-          var table2 = [bulan,tahun,totalpendapatanBulanan,];
-          query2 = mysql.format(query2,table2)
+             query2 = "select hargaTotal from stock";
+             connection.query(query2,function(err,temp){
+               if(err){
+                 res.json({"message":"gagal hitung modal"});
+               }
+               else{
+                 var modal = Number(0);
+                 for (var i = 0; i < temp.length; i++) {
+                   modal=Number(modal)+Number(temp[i].hargaTotal);
+                 }
+                 var totalPendapatan = totalHarga-modal;
+                 var query3 = "insert into `laporanbulanan` (`bulan`,`tahun`,`totalpendapatan`) VALUES (?,?,?)";
+                 var table3 = [bulan,tahun,totalPendapatan];
+                 query3 = mysql.format(query3,table3);
+                 connection.query(query3,function(err,succ){
+                   if(err){
+                     res.json({"message":"gagal mendapatkan total pendapatan bersih"});
+                   }
+                   else{
+                     res.json({"message":"berhasil mendapatkan total pendapatan bersih"});
+                   }
 
-          connection.query(query2,function(err,success){
-            if(err){
-              res.json({"message":"gagal memasukkan ke database harian"+query2});
-            }
-            else{
-              res.json({"message":"berhasil memasukkan ke database harian"+query2});
+                 });
+               }
 
-            }
-
-          });
+             });
           }
       });
   });
