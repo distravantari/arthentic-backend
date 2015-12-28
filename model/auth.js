@@ -264,6 +264,18 @@ router.post("/cekPermission",function(req,res){
      })
    })
 
+   router.get("/showPermission",function(req,res){
+     var nama = req.params.nama ||req.query.nama;
+     var query = "SELECT `permission` from `user` where `nama` = '"+nama+"' ";
+     connection.query(query,function(err,rows){
+       if (err) {
+         res.json({"message":"gagal menampilkan permission"});
+       }else{
+         res.json({"message":rows});
+       }
+     })
+   })
+
 
 }
 
