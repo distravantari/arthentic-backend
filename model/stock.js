@@ -356,7 +356,7 @@ router.post("/reorderStok",function(req,res){
       res.json({"message":"err..."+rows});
     }else{
       var jumlah = Number(rows[0].jumlah);
-      if (jumlah<5) {
+      if (jumlah<100) {
         res.json({"message":"stock ini hampir habis"});
       }
       else {
