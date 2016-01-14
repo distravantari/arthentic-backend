@@ -57,7 +57,7 @@ menu.prototype.handleRoutes = function(router,connection,md5)
         //request harga
         var harga = req.body.harga;
         //request kuantitas
-        var kuantitas = req.body.kuantitas;
+        //var kuantitas = req.body.kuantitas;
 
          //query checking id jika sudah ada yang sama
          var query1 = "select id from menu where id = ?";
@@ -70,7 +70,7 @@ menu.prototype.handleRoutes = function(router,connection,md5)
             if(temp.length == 0 )
             {
                 //query insert
-                var query = "insert into `menu` (id,nama,komposisi,harga,kuantitas) VALUES (?,?,?,?,?)";
+                var query = "insert into `menu` (id,nama,komposisi,harga) VALUES (?,?,?,?)";
                 var table = [id,nama,komposisi,harga,kuantitas];
                 query = mysql.format(query, table);
 
@@ -125,7 +125,7 @@ menu.prototype.handleRoutes = function(router,connection,md5)
           //request harga baru
           var hargaBaru = req.body.hargaBaru;
           //request kuantitas baru
-          var kuantitasBaru = req.body.kuantitasBaru;
+          //var kuantitasBaru = req.body.kuantitasBaru;
 
           //query cek nama menu di db
           var queryLogin2 = "select id from menu where id = ?";
@@ -147,8 +147,8 @@ menu.prototype.handleRoutes = function(router,connection,md5)
               else
               {
                   //query cek username di db
-                  var queryUpdate = "UPDATE `menu` SET `id`=?,`nama`= ?,`komposisi`=?,`harga`=?,`kuantitas`=? WHERE id = ?";
-                  var tableUpdate= [idBaru,namaBaru,komposisiBaru,hargaBaru,kuantitasBaru,id];
+                  var queryUpdate = "UPDATE `menu` SET `id`=?,`nama`= ?,`komposisi`=?,`harga`=? WHERE id = ?";
+                  var tableUpdate= [idBaru,namaBaru,komposisiBaru,hargaBaru,id];
                   queryUpdate = mysql.format(queryUpdate,tableUpdate);
 
                   connection.query(queryUpdate,function(err,temp)
