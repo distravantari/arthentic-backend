@@ -348,6 +348,16 @@ router.post("/deleteStok",function(req,res){
   })
 })
 
+router.get("/getStockThatEmpty",function(req,res){
+  connection.query("SELECT nama FROM `stock` WHERE `status` = 'empty'",function(err,rows){
+    if (err) {
+      res.json({"message":"err..."+err});
+    }else{
+      res.json({"message":rows});
+    }
+  })
+})
+
 router.post("/reorderStok",function(req,res){
   var nama = req.body.nama;
   var query = "select jumlah FROM `stock` where nama= '"+nama+"'";
@@ -357,12 +367,17 @@ router.post("/reorderStok",function(req,res){
     }else{
       var jumlah = Number(rows[0].jumlah);
       if (jumlah<100) {
-        res.json({"message":"stock ini hampir habis"});
+        connection.query("UPDATE `stock` SET `status`= 'empty' where nama = '"+nama+"'",function(err,sto){
+          if (err) {
+            res.json({"message":"err..."+rows});
+          }else{
+            res.json({"message":"stock ini hampir habis"});
+          }
+        });
       }
       else {
         res.json({"message":"stok aman"});
       }
-
     }
   })
 })

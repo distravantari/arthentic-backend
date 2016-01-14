@@ -9,12 +9,47 @@ menu.prototype.handleRoutes = function(router,connection,md5)
   router.post("/showMenuById",function(req,res){
     var id = req.body.id;
     // var id = req.body.id;
-    var query = "select * from `menu` WHERE id = '"+id+"'";
+    var query = "select * from `menu` WHERE id = '"+id+"' AND status ='ready'";
     connection.query(query,function(err,success){
         if(err){
             res.json({"message":"gagal menampilkan menu"+query})
         }else{
+          if (success.length == 0) {
+            res.json({"message":[{
+              "id": "no",
+              "nama": "menu habis/tidak ada"
+            }]
+          });
+          }else{
             res.json({"message":success});
+          }
+        }
+    });
+  })
+
+  // set stock with params name to empty
+  router.post("/showMenuFromKomposition",function(req,res){
+    var name = req.body.name;
+    var temp = '';
+    var query = "select komposisi,nama from `menu`";
+    connection.query(query,function(err,success){
+        if(err){
+            res.json({"message":"gagal menampilkan menu"+query});
+        }else{
+          //for each
+          for (var i = 0; i < success.length; i++) {
+            var kompo = success[i].komposisi.split(",");
+            // var namaStock = kompo[i].split(" ");
+            for (var j = 0; j < kompo.length; j++) {
+              var namaStock = kompo[j].split(" ");
+              if (namaStock[0].toUpperCase() == name.toUpperCase()) {
+                // temp += namaStock[0];
+                connection.query("UPDATE `menu` SET `status`='empty' WHERE nama ='"+success[i].nama+"'");
+              }
+              // temp+= namaStock[0]+",";
+            }
+          }
+          res.json({"message":success});
         }
     });
   })
@@ -22,7 +57,7 @@ menu.prototype.handleRoutes = function(router,connection,md5)
   router.get("/showMenuById",function(req,res){
     var id = req.params.id || req.query.id;
     // var id = req.body.id;
-    var query = "select * from `menu` WHERE id = '"+id+"'";
+    var query = "select * from `menu` WHERE id = '"+id+"' AND status = 'ready'";
     connection.query(query,function(err,success){
         if(err){
             res.json({"message":"gagal menampilkan menu"+query})
