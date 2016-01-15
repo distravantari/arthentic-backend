@@ -71,7 +71,7 @@ menu.prototype.handleRoutes = function(router,connection,md5)
             {
                 //query insert
                 var query = "insert into `menu` (id,nama,komposisi,harga) VALUES (?,?,?,?)";
-                var table = [id,nama,komposisi,harga,kuantitas];
+                var table = [id,nama,komposisi,harga];
                 query = mysql.format(query, table);
 
                 connection.query(query,function(err,temp){
