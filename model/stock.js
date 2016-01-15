@@ -376,7 +376,15 @@ router.post("/reorderStok",function(req,res){
         });
       }
       else {
-        res.json({"message":"stok aman"});
+        connection.query("UPDATE `stock` SET `status`= 'ready' where nama = '"+nama+"'",function(err,sto){
+          if (err) {
+            res.json({"message":"err..."+rows});
+          }else{
+            // res.json({"message":"stock ini hampir habis"});
+            res.json({"message":"stok aman"});
+          }
+        });
+
       }
     }
   })
