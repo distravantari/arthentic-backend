@@ -260,7 +260,7 @@ router.post("/updateStock",function(req,res)
       {
           //query cek username di db
           var queryUpdate = "UPDATE `stock` SET `id` = ?, `nama`= ?,`jumlah`=?,`hargaTotal`=?,`satuan`=?,`reorder`=? WHERE id = ?";
-          var tableUpdate= [idBaru,namaBaru,jumBaru,harBaru,satuanBaru,id,reorderBaru];
+          var tableUpdate= [idBaru,namaBaru,jumBaru,harBaru,satuanBaru,reorderBaru,id];
           queryUpdate = mysql.format(queryUpdate,tableUpdate);
 
           connection.query(queryUpdate,function(err,temp)
