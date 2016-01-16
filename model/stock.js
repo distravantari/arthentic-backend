@@ -13,6 +13,8 @@ stock.prototype.handleRoutes = function(router,connection,md5)
      var nama = req.body.nama;
      //request jumlah
      var jumlah = req.body.jumlah;
+     //request satuan
+     var satuan = req.body.satuan;
      //request hargaTotal
      var hargaTotal = req.body.hargaTotal;
 
@@ -28,8 +30,8 @@ stock.prototype.handleRoutes = function(router,connection,md5)
         if(temp.length == 0 )
         {
             //query insert
-            var query = "INSERT INTO `stock` (id,nama,jumlah,hargaTotal) VALUES (?,?,?,?)";
-            var table = [id,nama,jumlah,hargaTotal];
+            var query = "INSERT INTO `stock` (id,nama,jumlah,satuan,hargaTotal) VALUES (?,?,?,?,?)";
+            var table = [id,nama,jumlah,satuan,hargaTotal];
             query = mysql.format(query, table);
 
             connection.query(query,function(err,temp){
@@ -231,6 +233,9 @@ router.post("/updateStock",function(req,res)
   var jumBaru = req.body.jumBaru;
   //request hargaBaru
   var harBaru = req.body.harBaru;
+  //new
+  //request satuanBaru
+  var satuanBaru = req.body.satuanBaru;
   //query cek nama menu di db
   var queryLogin2 = "select id from stock where id = ?";
   var tableLogin2 = [id];
@@ -251,8 +256,8 @@ router.post("/updateStock",function(req,res)
       else
       {
           //query cek username di db
-          var queryUpdate = "UPDATE `stock` SET `id` = ?, `nama`= ?,`jumlah`=?,`hargaTotal`=? WHERE id = ?";
-          var tableUpdate= [idBaru,namaBaru,jumBaru,harBaru,id];
+          var queryUpdate = "UPDATE `stock` SET `id` = ?, `nama`= ?,`jumlah`=?,`hargaTotal`=?,`satuan`=? WHERE id = ?";
+          var tableUpdate= [idBaru,namaBaru,jumBaru,harBaru,satuanBaru,id];
           queryUpdate = mysql.format(queryUpdate,tableUpdate);
 
           connection.query(queryUpdate,function(err,temp)
@@ -384,7 +389,6 @@ router.post("/reorderStok",function(req,res){
             res.json({"message":"stok aman"});
           }
         });
-
       }
     }
   })

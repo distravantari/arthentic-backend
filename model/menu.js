@@ -92,6 +92,9 @@ menu.prototype.handleRoutes = function(router,connection,md5)
         //request harga
         var harga = req.body.harga;
         //request kuantitas
+        //new
+        //request harga produksi
+        var hargaProduksi = req.body.hargaProduksi;
         //var kuantitas = req.body.kuantitas;
 
          //query checking id jika sudah ada yang sama
@@ -105,8 +108,8 @@ menu.prototype.handleRoutes = function(router,connection,md5)
             if(temp.length == 0 )
             {
                 //query insert
-                var query = "insert into `menu` (id,nama,komposisi,harga) VALUES (?,?,?,?)";
-                var table = [id,nama,komposisi,harga];
+                var query = "insert into `menu` (id,nama,komposisi,harga,hargaProduksi) VALUES (?,?,?,?,?)";
+                var table = [id,nama,komposisi,harga,hargaProduksi];
                 query = mysql.format(query, table);
 
                 connection.query(query,function(err,temp){
@@ -160,6 +163,9 @@ menu.prototype.handleRoutes = function(router,connection,md5)
           //request harga baru
           var hargaBaru = req.body.hargaBaru;
           //request kuantitas baru
+          //new
+          //request hargaProduksi
+          var hargaProduksi = re.body.hargaProduksi;
           //var kuantitasBaru = req.body.kuantitasBaru;
 
           //query cek nama menu di db
@@ -182,8 +188,8 @@ menu.prototype.handleRoutes = function(router,connection,md5)
               else
               {
                   //query cek username di db
-                  var queryUpdate = "UPDATE `menu` SET `id`=?,`nama`= ?,`komposisi`=?,`harga`=? WHERE id = ?";
-                  var tableUpdate= [idBaru,namaBaru,komposisiBaru,hargaBaru,id];
+                  var queryUpdate = "UPDATE `menu` SET `id`=?,`nama`= ?,`komposisi`=?,`harga`=?,`hargaProduksi`=? WHERE id = ?";
+                  var tableUpdate= [idBaru,namaBaru,komposisiBaru,hargaBaru,hargaProduksi,id];
                   queryUpdate = mysql.format(queryUpdate,tableUpdate);
 
                   connection.query(queryUpdate,function(err,temp)
