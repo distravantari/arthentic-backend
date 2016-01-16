@@ -116,21 +116,21 @@ data.prototype.handleRoutes = function(router,connection,md5)
 
   //show Pegawai
   router.post("/showPegawai",function(req,res){
-  //query show db
-  var queryKode = "select* from `pegawai`";
-  queryKode = mysql.format(queryKode);
-  connection.query(queryKode,function(err,temp)
-  {
-  //jika id tidak ada di db
-  if(err)
-  {
-   res.json({"message":"error "+ queryKode});
-  }
-  else
-  {
-    res.json({"message":temp});
-  }
-  });
+    //query show db
+    var queryKode = "select* from `pegawai`";
+    queryKode = mysql.format(queryKode);
+    connection.query(queryKode,function(err,temp)
+      {
+          //jika id tidak ada di db
+          if(err)
+      {
+          res.json({"message":"error "+ queryKode});
+      }
+      else
+      {
+          res.json({"message":temp});
+      }
+    });
   });
 
   //insert supplier (id, namaUser, perubahan, row)

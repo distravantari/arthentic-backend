@@ -152,24 +152,24 @@ auth.prototype.handleRoutes = function(router,connection,md5)
    router.post("/deleteUser",function(req,res)
    {
        //request nama yang di delete
-       var nama_delete = req.body.nama_delete;
+       var nama = req.body.nama;
 
        //query cek username
-       var queryDelete = "delete from user where nama = ?";
-       var tableDelete = [nama_delete];
-       queryLogin = mysql.format(queryDelete,tableDelete);
+       var queryDelete = "delete from `user` where `nama` = '"+nama+"'";
+      //  var tableDelete = [nama_delete];
+      //  queryLogin = mysql.format(queryDelete,tableDelete);
 
        connection.query(queryDelete,function(err,temp)
        {
            //jika delete gagal
            if(err)
            {
-               res.json({"message":"error!"});
+               res.json({"message":queryDelete});
            }
            //jika delete berhasil
            else
            {
-               res.json({"message":"Delete user dengan nama : "+name_delete+" berhasil"});
+               res.json({"message":"Delete user dengan nama : "+nama+" berhasil"});
            }
        });
    });
@@ -178,6 +178,18 @@ auth.prototype.handleRoutes = function(router,connection,md5)
    router.get("/user",function(req,res){
      var status = req.params.status || req.query.status;
      var query = "SELECT * FROM `user` WHERE status = '"+status+"'";
+     connection.query(query,function(err,rows){
+       if (err) {
+         res.json({"message":"err.."+err});
+       }else{
+         res.json({"message":rows});
+       }
+     })
+   })
+
+   router.post("/userProfile",function(req,res){
+     var username = req.body.username;
+     var query = "SELECT * FROM `user` WHERE `nama` = '"+username+"'";
      connection.query(query,function(err,rows){
        if (err) {
          res.json({"message":"err.."+err});
@@ -275,7 +287,6 @@ router.post("/cekPermission",function(req,res){
        }
      })
    })
-
 
 }
 

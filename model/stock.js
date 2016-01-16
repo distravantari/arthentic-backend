@@ -368,13 +368,13 @@ router.get("/getStockThatEmpty",function(req,res){
 
 router.post("/reorderStok",function(req,res){
   var nama = req.body.nama;
-  var query = "select jumlah FROM `stock` where nama= '"+nama+"'";
+  var query = "select * FROM `stock` where nama= '"+nama+"'";
   connection.query(query,function(err,rows){
     if (err) {
       res.json({"message":"err..."+rows});
     }else{
       var jumlah = Number(rows[0].jumlah);
-      if (jumlah<100) {
+      if (jumlah<rows[0].reorder) {
         connection.query("UPDATE `stock` SET `status`= 'empty' where nama = '"+nama+"'",function(err,sto){
           if (err) {
             res.json({"message":"err..."+rows});
