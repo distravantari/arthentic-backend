@@ -165,7 +165,7 @@ menu.prototype.handleRoutes = function(router,connection,md5)
           //request kuantitas baru
           //new
           //request hargaProduksi
-          var hargaProduksi = re.body.hargaProduksi;
+          var hargaProduksi = req.body.hargaProduksi;
           //var kuantitasBaru = req.body.kuantitasBaru;
 
           //query cek nama menu di db

@@ -16,22 +16,29 @@ order.prototype.handleRoutes = function(router,connection,md5)
       var diskon = req.body.diskon;
       var hargasatuan = req.body.hargasatuan;
       var hargaTotal = req.body.hargaTotal;
-      //query insert
-      var query = "insert into `order` (nomerorder,id,date,pesanan,quantity,diskon,hargasatuan,hargaakhir) VALUES (?,?,?,?,?,?,?,?)";
-      var table = [nomerorder,id,date,pesanan,quantity,diskon,hargasatuan,hargaTotal];
-      query = mysql.format(query,table);
-
-      //sukses, kembalikan total harga
-      connection.query(query,function(err,success){
-          if(err){
-              res.json({"message":"error"});
+        var test = "SELECT * from `menu` where nama = '"+pesanan+"'"
+        connection.query(test,function(err,rows){
+          //sukses, kembalikan total harga
+          //query insert
+          if (err) {
+            res.json({"message":test});
+          }else{
+            // res.json({"message":rows[0].hargaProduksi});
+            var query = "insert into `order` (nomerorder,id,date,pesanan,quantity,diskon,hargasatuan,hargaProduksi,hargaakhir) VALUES (?,?,?,?,?,?,?,?,?)";
+            var table = [nomerorder,id,date,pesanan,quantity,diskon,hargasatuan,(rows[0].hargaProduksi*quantity),((hargasatuan*quantity)-(hargasatuan*quantity*(diskon/100))-(rows[0].hargaProduksi*quantity))];
+            query = mysql.format(query,table);
+            connection.query(query,function(err,success){
+                if(err){
+                    res.json({"message":query});
+            //         // alert(query);
+                }
+                else{
+                    res.json({"message":"Berhasil input order" + query + hargaTotal});
+                }
+            });
           }
-          else{
-              res.json({"message":"Berhasil input order" + query + hargaTotal});
-          }
-      });
 
-
+        })
       });
 
   router.post("/deleteOrder",function(req,res){

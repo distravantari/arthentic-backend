@@ -102,7 +102,7 @@ report.prototype.handleRoutes = function(router,connection,md5)
       //var nomerorder=req.body.nomerorder;
       var totalHarga=Number(0);
       // pilih harga berdasarkan tanggal
-      var query = "select pesanan,quantity,diskon,hargaAkhir from `order` where EXTRACT(MONTH from date)=? AND EXTRACT(YEAR from date)=?";
+      var query = "select * from `order` where EXTRACT(MONTH from date)=? AND EXTRACT(YEAR from date)=?";
       var table = [bulan,tahun];
       query = mysql.format(query,table);
 
