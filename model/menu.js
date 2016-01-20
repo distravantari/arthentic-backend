@@ -209,7 +209,74 @@ menu.prototype.handleRoutes = function(router,connection,md5)
             });
         });
         //--update nama selesai...
+
+//set menu ready
+router.get("/setMenuReady",function(req,res)
+{
+    //request id
+    var id = req.params.id || req.query.id;
+
+    //query cek nama menu di db
+    var queryLogin2 = "UPDATE `menu` SET `status`='ready' WHERE `id` = ?";
+    var tableLogin2 = [id];
+    queryLogin2 = mysql.format(queryLogin2,tableLogin2);
+
+    connection.query(queryLogin2,function(err,temp)
+    {
+        //jika nama tidak cocok sama DB
+        if(err)
+        {
+            res.json({"message":"id menu tidak ada di database "+queryLogin2});
+        }
+        else
+        {
+          res.json({"message":"sukses"});
+        }
+      });
+  });
+ //--set ready selesai...
+
+ // set empty start
+ router.get("/setMenuEmpty",function(req,res){
+     var id = req.params.id || req.query.id;
+     var query = "SELECT `komposisi` FROM `menu` WHERE id='"+id+"'";
+     connection.query(query,function(err,success){
+       if(err){
+         res.json({"message":query});
+       }else{
+        //  res.json({"message":success[0].komposisi});
+        var komposisi = success[0].komposisi.split(',');
+        // var kompo = komposisi[0].split(' ');
+        var stat = 'ready';
+        for (var i = 0; i < komposisi.length; i++) {
+          var kompo = komposisi[i].split(' ');
+          var queryStock = "SELECT `status` FROM `stock` WHERE nama ='"+kompo[0]+"'";
+          connection.query(queryStock,function(err,sto){
+            if(err){
+              res.json({"message":queryStock});
+            }else{
+              // res.json({"message":sto[0].status});
+              if(sto[0].status == 'empty'){
+                connection.query("UPDATE `menu` SET `status` = 'empty' WHERE id='"+id+"'");
+                stat ='empty';
+              }else{
+              }
+            }
+
+            console.log(stat);
+          });
+        }
+          res.json({"message":'done'});
+       }
+     });
+ });
+ // set empty end
+
+
+
 }
+
+
 
 
 module.exports = menu;
