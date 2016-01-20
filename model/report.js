@@ -77,6 +77,7 @@ report.prototype.handleRoutes = function(router,connection,md5)
       // param tanggal
       var startdate = req.body.startdate;
       var enddate = req.body.enddate;
+
       var totalPendapatan = [];
       var tanggal = [];
 
@@ -92,21 +93,40 @@ report.prototype.handleRoutes = function(router,connection,md5)
             if (success.length == 0) {
               res.json({"message":"you set date incorectly "});
             }else{
-                  for (var i = 1; i < success.length; i++) {
-                    for (var j = 0; j < i; j++) {
+
+                  for (var i = 0; i < success.length; i++) {
+                    var totalHarga = success[i].hargaAkhir;
+                    for (var j = i+1; j < success.length; j++) {
                       if(success[i].date.getTime()==success[j].date.getTime()){
-                        totalPendapatan[i]+=success[i].hargaAkhir;
-                        tanggal[i] = success[i].date;
-                  }
+                        totalHarga+=success[j].hargaAkhir;
+                      }
                   else{
-                    var query2 = "insert into `laporanmingguan` (date,TotalPemasukkan) VALUES (?,?)"
-                    var table2 = [tanggal[i],totalPendapatan[i]]
+                    tanggal.push(success[i].date);
+                    totalPendapatan.push(totalHarga);
+                    i=j;
+                    j=success.length;
                   }
               }
             }
+
           }
-      });
+        }
   });
+
+  var query2 = "insert into `laporanmingguan` (`date`,`TotalPemasukkan`) VALUES ?"
+  var table2 = [[tanggal],[totalPendapatan]];
+
+  //query2 = mysql.format(query2,table2);
+  connection.query(query2,[table2],function(error,rows){
+    if(error){
+      res.json({"message":"gagal insert ke DB mingguan"})
+    }
+    else{
+      res.json({"message":"berhasil insert ke DB mingguan"})
+    }
+
+  })
+});
 
 
   router.post("/insertDBMingguan",function(req,res){

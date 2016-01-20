@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 20, 2016 at 07:34 AM
--- Server version: 10.1.9-MariaDB
+-- Generation Time: Jan 20, 2016 at 05:04 AM
+-- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.5.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -354,7 +354,8 @@ CREATE TABLE `invoice` (
   `kuantitas` varchar(100) NOT NULL,
   `totalSatuan` varchar(100) NOT NULL,
   `discount` int(100) NOT NULL,
-  `hargaSatuan` int(100) NOT NULL
+  `hargaSatuan` int(100) NOT NULL,
+  `paid` decimal(65,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -392,14 +393,6 @@ CREATE TABLE `laporanmingguan` (
   `date` date NOT NULL,
   `TotalPemasukkan` decimal(65,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `laporanmingguan`
---
-
-INSERT INTO `laporanmingguan` (`id`, `date`, `TotalPemasukkan`) VALUES
-(8, '2016-01-17', '41000'),
-(9, '2016-01-17', '41000');
 
 -- --------------------------------------------------------
 
@@ -675,12 +668,12 @@ ALTER TABLE `laporanmingguan`
 -- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `laporanmingguan`
 --
 ALTER TABLE `laporanmingguan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
