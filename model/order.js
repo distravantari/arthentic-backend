@@ -43,12 +43,13 @@ order.prototype.handleRoutes = function(router,connection,md5)
 
   router.post("/deleteOrder",function(req,res){
 
-      // param tanggal
-      var nomerorder = req.body.nomerorder;
+      // param Id,Date,HargaAkhir
       var id = req.body.id;
+      var tanggal = req.body.Date;
+      var HargaAkhir = req.body.HargaAkhir;
       // pilih harga berdasarkan tanggal
-      var query = "DELETE FROM `order` WHERE nomerorder=? AND id=?";
-      var table = [nomerorder,id];
+      var query = "DELETE FROM `order` WHERE `Id`=? AND `Date`=? AND `HargaAkhir`=? ORDER BY `id` DESC LIMIT 1";
+      var table = [id,tanggal,HargaAkhir,id];
       query = mysql.format(query,table);
 
       //sukses, kembalikan total harga
@@ -56,7 +57,7 @@ order.prototype.handleRoutes = function(router,connection,md5)
           if(err){
               res.json({"message":"gagal menghapus"})
           }else{
-             res.json({"message":"berhasil menghapus"});
+                res.json({"message":"berhasil menghapus"});
           }
       });
   });
