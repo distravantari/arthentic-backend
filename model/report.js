@@ -49,29 +49,69 @@ report.prototype.handleRoutes = function(router,connection,md5)
       });
   });
 
-// MINGGUAN
-  router.post("/hitungMingguan",function(req,res){
-      // param tanggal
-      var startdate = req.body.startdate;
-      var enddate = req.body.enddate;
+// // MINGGUAN
+//   router.post("/hitungMingguan",function(req,res){
+//       // param tanggal
+//       var startdate = req.body.startdate;
+//       var enddate = req.body.enddate;
+//
+//       var query = "select * from `order` where date between ? and ?";
+//       var table = [startdate,enddate];
+//       query = mysql.format(query,table);
+//
+//       //sukses, kembalikan total harga
+//       connection.query(query,function(err,success){
+//           if(err){
+//               res.json({"message":"err.."+query});
+//           }else{
+//             if (success.length == 0) {
+//               res.json({"message":"you set date incorectly "+query});
+//             }else{
+//               res.json({"message":success});
+//             }
+//           }
+//       });
+//   });
 
-      var query = "select * from `order` where date between ? and ?";
-      var table = [startdate,enddate];
-      query = mysql.format(query,table);
+  // router.post("/hitungMingguan",function(req,res){
+  //     // param tanggal
+  //     var startdate = req.body.startdate;
+  //     var enddate = req.body.enddate;
+  //
+  //     var query = "select date,hargaAkhir from `order` where date between ? and ?";
+  //     var table = [startdate,enddate];
+  //     query = mysql.format(query,table);
+  //
+  //     //sukses, kembalikan total harga
+  //     connection.query(query,function(err,success){
+  //         if(err){
+  //             res.json({"message":"error"});
+  //         }else{
+  //           if (success.length == 0) {
+  //             res.json({"message":"you set date incorectly "});
+  //           }else{
+  //             //res.json({"message":success})
+  //             var ct=0;
+  //             var totalPendapatan=0;
+  //             //var pendapatanMingguan =[];
+  //             //var tanggalMingguan=[];
+  //             for (var i = 0; i < success.length; i++) {
+  //               if(success[ct].date.getTime()==success[ct+1].date.getTime()){
+  //                 totalPendapatan+=success[i].hargaAkhir;
+  //               }
+  //               else{
+  //                 //tanggalMingguan.push(success[0].date.getDate());
+  //                 var tanggal = success[ct];
+  //                 //pendapatanMingguan.push(totalPendapatan);
+  //               }
+  //
+  //             }
+  //             res.json({"message":"date :"+ tanggal+ " total pendapatan :"+ totalPendapatan});
+  //           }
+  //         }
+  //     });
+  // });
 
-      //sukses, kembalikan total harga
-      connection.query(query,function(err,success){
-          if(err){
-              res.json({"message":"err.."+query});
-          }else{
-            if (success.length == 0) {
-              res.json({"message":"you set date incorectly "+query});
-            }else{
-              res.json({"message":success});
-            }
-          }
-      });
-  });
 
   router.post("/insertDBMingguan",function(req,res){
       var startdate = req.body.startdate;

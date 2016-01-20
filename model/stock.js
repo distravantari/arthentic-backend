@@ -199,6 +199,77 @@ stock.prototype.handleRoutes = function(router,connection,md5)
  });
   //--tambah stock end..
 
+  router.post("/tambahStoks",function(req,res){
+     //request nama
+     var nama = req.body.nama;
+     //request jumlah
+     var jumPenambahan = req.body.jumPenambahan;
+     //request harga
+     //var harga = req.body.harga;
+
+     //query cek nama di db
+     var queryKode = "select id from stock where nama = ?" ;
+     var tableKode = [nama];
+     queryKode = mysql.format(queryKode,tableKode);
+     connection.query(queryKode,function(err,temp)
+     {
+         //jika nama tidak ada di db
+         if(temp.length==0)
+         {
+             res.json({"message":"Kode input tidak ada di db "});
+         }
+         else
+         {
+              //query jumlah stock cukup apa ga
+              var query1 = "select jumlah,hargaTotal from stock where nama = ?";
+              var table1 = [nama];
+              query1 = mysql.format(query1,table1);
+
+              connection.query(query1,function(err,temp)
+              {
+                  var jumStokbaru = temp[0].jumlah - (-jumPenambahan);
+                  //var jumHargaBaru = temp[0].hargaTotal - (-harga);
+                  var hargaTotalBaru = Number(temp[0].hargaTotal - (temp[0].hargaTotal / temp[0].jumlah));
+                  //var table = [hargaTotalBaru,jumStokbaru];
+                  //Jika penambahan melebihi kuota
+                  if(jumStokbaru >= 255)
+                  {
+                      res.json({"message":"Penambahan melebihi kuota stok.. stok "+temp[0].jumlah});
+                  }
+                  else if(err)
+                  {
+                    res.json({"message":err})
+                  }
+                  //Jika stock cukup
+                  else
+                  {
+                      //query penambahan
+                      var query = "UPDATE `stock` SET `hargaTotal`=?,`jumlah`=? WHERE nama = ?";
+                      var table = [hargaTotalBaru,jumStokbaru,nama];
+                      query = mysql.format(query, table);
+
+                      connection.query(query,function(err,temp){
+                      if(err)
+                      {
+                          res.json({"message":err});
+                      }
+                      else
+                      {
+
+                          res.json({"message":"penambahan stok berhasil.. stok "+jumStokbaru});
+                      }
+                      });
+
+                  }
+
+              });
+         }
+
+     });
+
+ });
+  //--tambah stock end..
+
   //untuk show smua stock yang aad di table stock
   router.post("/showstok",function(req,res){
     connection.query("SELECT * FROM `stock`",function(err,rows){
