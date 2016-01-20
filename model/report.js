@@ -73,44 +73,40 @@ report.prototype.handleRoutes = function(router,connection,md5)
 //       });
 //   });
 
-  // router.post("/hitungMingguan",function(req,res){
-  //     // param tanggal
-  //     var startdate = req.body.startdate;
-  //     var enddate = req.body.enddate;
-  //
-  //     var query = "select date,hargaAkhir from `order` where date between ? and ?";
-  //     var table = [startdate,enddate];
-  //     query = mysql.format(query,table);
-  //
-  //     //sukses, kembalikan total harga
-  //     connection.query(query,function(err,success){
-  //         if(err){
-  //             res.json({"message":"error"});
-  //         }else{
-  //           if (success.length == 0) {
-  //             res.json({"message":"you set date incorectly "});
-  //           }else{
-  //             //res.json({"message":success})
-  //             var ct=0;
-  //             var totalPendapatan=0;
-  //             //var pendapatanMingguan =[];
-  //             //var tanggalMingguan=[];
-  //             for (var i = 0; i < success.length; i++) {
-  //               if(success[ct].date.getTime()==success[ct+1].date.getTime()){
-  //                 totalPendapatan+=success[i].hargaAkhir;
-  //               }
-  //               else{
-  //                 //tanggalMingguan.push(success[0].date.getDate());
-  //                 var tanggal = success[ct];
-  //                 //pendapatanMingguan.push(totalPendapatan);
-  //               }
-  //
-  //             }
-  //             res.json({"message":"date :"+ tanggal+ " total pendapatan :"+ totalPendapatan});
-  //           }
-  //         }
-  //     });
-  // });
+  router.post("/hitungMingguan",function(req,res){
+      // param tanggal
+      var startdate = req.body.startdate;
+      var enddate = req.body.enddate;
+      var totalPendapatan = [];
+      var tanggal = [];
+
+      var query = "select date,hargaAkhir from `order` where date between ? and ?";
+      var table = [startdate,enddate];
+      query = mysql.format(query,table);
+
+      //sukses, kembalikan total harga
+      connection.query(query,function(err,success){
+          if(err){
+              res.json({"message":"error"});
+          }else{
+            if (success.length == 0) {
+              res.json({"message":"you set date incorectly "});
+            }else{
+                  for (var i = 1; i < success.length; i++) {
+                    for (var j = 0; j < i; j++) {
+                      if(success[i].date.getTime()==success[j].date.getTime()){
+                        totalPendapatan[i]+=success[i].hargaAkhir;
+                        tanggal[i] = success[i].date;
+                  }
+                  else{
+                    var query2 = "insert into `laporanmingguan` (date,TotalPemasukkan) VALUES (?,?)"
+                    var table2 = [tanggal[i],totalPendapatan[i]]
+                  }
+              }
+            }
+          }
+      });
+  });
 
 
   router.post("/insertDBMingguan",function(req,res){
