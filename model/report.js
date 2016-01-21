@@ -55,7 +55,7 @@ report.prototype.handleRoutes = function(router,connection,md5)
       var startdate = req.body.startdate;
       var enddate = req.body.enddate;
 
-      var query = "select `date`,`HargaAkhir` from `order` where date between ? and ?";
+      var query = "select `Date`,`HargaAkhir` from `order` where date between ? and ?";
       var table = [startdate,enddate];
       query = mysql.format(query,table);
       //sukses, kembalikan total harga
