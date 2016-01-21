@@ -468,16 +468,15 @@ router.post("/reorderStok",function(req,res){
   })
 })
 
-router.post("/cekStok",function(req,res){
-  var nama = req.body.nama;
-  var nilai = req.body.nilai;
+router.get("/cekStok",function(req,res){
+  var nama = req.params.nama || req.query.nama;
+  var nilai = req.params.nilai|| req.query.nilai;
   var query = "select * FROM `stock` where nama= '"+nama+"'";
   connection.query(query,function(err,rows){
     if (err) {
       res.json({"message":"err..."+rows});
     }else{
-      var jumlah = Number(rows[0].jumlah);
-      if (jumlah-nilai<rows[0].reorder) {
+      if (rows[0].jumlah-nilai<rows[0].reorder) {
         res.json({"message":"stok di bawah reorder stok"});
       }
       else{
