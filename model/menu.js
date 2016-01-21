@@ -271,9 +271,6 @@ router.get("/setMenuReady",function(req,res)
      });
  });
  // set empty end
-
-
-
 }
 
 

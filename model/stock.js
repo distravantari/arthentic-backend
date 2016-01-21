@@ -467,6 +467,26 @@ router.post("/reorderStok",function(req,res){
     }
   })
 })
+
+router.post("/cekStok",function(req,res){
+  var nama = req.body.nama;
+  var nilai = req.body.nilai;
+  var query = "select * FROM `stock` where nama= '"+nama+"'";
+  connection.query(query,function(err,rows){
+    if (err) {
+      res.json({"message":"err..."+rows});
+    }else{
+      var jumlah = Number(rows[0].jumlah);
+      if (jumlah-nilai<rows[0].reorder) {
+        res.json({"message":"stok di bawah reorder stok"});
+      }
+      else{
+        res.json({"message":"stok di atas reorder stok"});
+      }
+    }
+  })
+})
+
 }
 
 
