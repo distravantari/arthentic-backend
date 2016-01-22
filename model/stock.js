@@ -472,11 +472,15 @@ router.get("/cekStok",function(req,res){
   var nama = req.params.nama || req.query.nama;
   var nilai = req.params.nilai|| req.query.nilai;
   var query = "select * FROM `stock` where nama= '"+nama+"'";
+  var jumlah=0;
+  var reorder=0;
   connection.query(query,function(err,rows){
     if (err) {
       res.json({"message":"err..."+rows});
     }else{
-      if (Number(rows[0].jumlah)-Number(nilai)<Number(rows[0].reorder)) {
+      jumlah = rows[0].jumlah;
+      reorder = rows[0].reorder;
+      if (jumlah-Number(nilai)<reorder) {
         res.json({"message":"stok di bawah reorder stok"});
       }
       else{
