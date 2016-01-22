@@ -476,7 +476,7 @@ router.get("/cekStok",function(req,res){
     if (err) {
       res.json({"message":"err..."+rows});
     }else{
-      if (rows[0].jumlah-nilai<rows[0].reorder) {
+      if (rows[0]-nilai<rows[0].reorder) {
         res.json({"message":"stok di bawah reorder stok"});
       }
       else{
