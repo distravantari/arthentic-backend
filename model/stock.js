@@ -232,7 +232,7 @@ stock.prototype.handleRoutes = function(router,connection,md5)
                   var hargaTotalBaru = Number(temp[0].hargaTotal - (temp[0].hargaTotal / temp[0].jumlah));
                   //var table = [hargaTotalBaru,jumStokbaru];
                   //Jika penambahan melebihi kuota
-                  if(jumStokbaru >= 255)
+                  if(jumStokbaru >= 1000000)
                   {
                       res.json({"message":"Penambahan melebihi kuota stok.. stok "+temp[0].jumlah});
                   }
