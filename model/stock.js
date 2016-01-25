@@ -87,7 +87,7 @@ stock.prototype.handleRoutes = function(router,connection,md5)
          else
          {
               //query jumlah stock cukup apa ga
-              var query1 = "select jumlah,hargaTotal from stock where nama = '"+nama+"'";
+              var query1 = "select jumlah from stock where nama = '"+nama+"'";
               //var table1 = [id];
             //  query1 = mysql.format(query1,table1);
 
@@ -97,10 +97,10 @@ stock.prototype.handleRoutes = function(router,connection,md5)
                   if(temp[0].jumlah-jumPengurangan>=0 )
                   {
                       //query pengurangan
-                      var query = "UPDATE `stock` SET `hargaTotal`=?,`jumlah`=? WHERE nama ='"+nama+"'";
+                      var query = "UPDATE `stock` SET `jumlah`=? WHERE nama ='"+nama+"'";
                       var jumStokbaru = temp[0].jumlah - jumPengurangan;
-                      var hargaTotalBaru = Number(temp[0].hargaTotal - (temp[0].hargaTotal / temp[0].jumlah));
-                      var table = [hargaTotalBaru,jumStokbaru];
+                    //var hargaTotalBaru = Number(temp[0].hargaTotal - (temp[0].hargaTotal / temp[0].jumlah));
+                      var table = [jumStokbaru];
                       query = mysql.format(query, table);
 
                       connection.query(query,function(err,temp){
@@ -221,7 +221,7 @@ stock.prototype.handleRoutes = function(router,connection,md5)
          else
          {
               //query jumlah stock cukup apa ga
-              var query1 = "select jumlah,hargaTotal from stock where nama = ?";
+              var query1 = "select jumlah from stock where nama = ?";
               var table1 = [nama];
               query1 = mysql.format(query1,table1);
 
@@ -229,7 +229,7 @@ stock.prototype.handleRoutes = function(router,connection,md5)
               {
                   var jumStokbaru = temp[0].jumlah - (-jumPenambahan);
                   //var jumHargaBaru = temp[0].hargaTotal - (-harga);
-                  var hargaTotalBaru = Number(temp[0].hargaTotal - (temp[0].hargaTotal / temp[0].jumlah));
+                  //var hargaTotalBaru = Number(temp[0].hargaTotal - (temp[0].hargaTotal / temp[0].jumlah));
                   //var table = [hargaTotalBaru,jumStokbaru];
                   //Jika penambahan melebihi kuota
                   if(jumStokbaru >= 1000000)
@@ -244,8 +244,8 @@ stock.prototype.handleRoutes = function(router,connection,md5)
                   else
                   {
                       //query penambahan
-                      var query = "UPDATE `stock` SET `hargaTotal`=?,`jumlah`=? WHERE nama = ?";
-                      var table = [hargaTotalBaru,jumStokbaru,nama];
+                      var query = "UPDATE `stock` SET `jumlah`=? WHERE nama = ?";
+                      var table = [jumStokbaru,nama];
                       query = mysql.format(query, table);
 
                       connection.query(query,function(err,temp){
